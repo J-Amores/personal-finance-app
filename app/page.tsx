@@ -12,52 +12,132 @@ import { TransactionList } from "@/components/transactions/TransactionList"
 import { TransactionFilters } from "@/components/transactions/TransactionFilters"
 import { SectionHeader } from "@/components/common/SectionHeader"
 
-import { getBalance, formatCurrency, getTransactions } from '@/lib/data';
-import { useState } from "react"
+import { getBalance, formatCurrency, getTransactions, Balance } from '@/lib/data';
+import { useState, useEffect } from "react"
+
+import { Transaction, SortOrder, CategoryFilter } from '@/types/transaction';
 
 export default function Dashboard() {
-  const balance = getBalance();
-  const transactions = getTransactions();
-  const categories = [...new Set(transactions.map(t => t.category))];
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [balance, setBalance] = useState<Balance | null>(null);
+  const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
+  
+  // Fetch data
+  useEffect(() => {
+    try {
+      const balanceData = getBalance();
+      const transactionsData = getTransactions();
+      setBalance(balanceData);
+      setAllTransactions(transactionsData);
+      setFilteredTransactions(transactionsData);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load data. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-  const handleSearch = (value: string) => {
-    // TODO: Implement search functionality
-    console.log('Search:', value);
+  const categories = [...new Set(allTransactions.map(t => t.category))];
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
+
+  const filterTransactions = (transactions: Transaction[], query: string, category: CategoryFilter) => {
+    return transactions.filter(transaction => {
+      const matchesSearch = query === '' || 
+        transaction.name.toLowerCase().includes(query.toLowerCase()) ||
+        transaction.category.toLowerCase().includes(query.toLowerCase()) ||
+        transaction.amount.toString().includes(query);
+
+      const matchesCategory = category === 'all' || 
+        transaction.category.toLowerCase() === category.toLowerCase();
+
+      return matchesSearch && matchesCategory;
+    });
   };
 
-  const handleSortChange = (value: string) => {
-    // TODO: Implement sort functionality
-    console.log('Sort:', value);
+  const sortTransactions = (transactions: Transaction[], order: SortOrder) => {
+    return [...transactions].sort((a, b) => {
+      switch (order) {
+        case 'oldest':
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case 'highest':
+          return b.amount - a.amount;
+        case 'lowest':
+          return a.amount - b.amount;
+        default: // 'latest'
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+    });
+  };
+
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+    const filtered = filterTransactions(allTransactions, value, selectedCategory);
+    const sorted = sortTransactions(filtered, sortOrder);
+    setFilteredTransactions(sorted);
+  };
+
+  const handleSortChange = (value: SortOrder) => {
+    setSortOrder(value);
+    const filtered = filterTransactions(allTransactions, searchQuery, selectedCategory);
+    const sorted = sortTransactions(filtered, value);
+    setFilteredTransactions(sorted);
   };
 
   const handleCategoryChange = (value: string) => {
-    // TODO: Implement category filter
-    console.log('Category:', value);
+    setSelectedCategory(value);
+    const filtered = filterTransactions(allTransactions, searchQuery, value);
+    const sorted = sortTransactions(filtered, sortOrder);
+    setFilteredTransactions(sorted);
   };
   return (
     <div className="p-8">
+      {error ? (
+        <div className="p-4 mb-8 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-700">{error}</p>
+        </div>
+      ) : null}
+
       <SectionHeader 
         title="Overview" 
         description="Your financial summary and recent activity"
       />
 
+
+
       {/* Financial Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <FinancialSummaryCard
-          title="Current Balance"
-          amount={balance.current}
-          variant="dark"
-        />
-        <FinancialSummaryCard
-          title="Income"
-          amount={balance.income}
-          variant="success"
-        />
-        <FinancialSummaryCard
-          title="Expenses"
-          amount={balance.expenses}
-          variant="destructive"
-        />
+        {balance ? (
+          <>
+            <FinancialSummaryCard
+              title="Current Balance"
+              amount={balance.current}
+              variant="dark"
+            />
+            <FinancialSummaryCard
+              title="Monthly Income"
+              amount={balance.income}
+              variant="success"
+            />
+            <FinancialSummaryCard
+              title="Monthly Expenses"
+              amount={balance.expenses}
+              variant="destructive"
+            />
+          </>
+        ) : (
+          // Loading skeletons for cards
+          <>
+            <div className="h-24 bg-gray-100 rounded-lg animate-pulse" />
+            <div className="h-24 bg-gray-100 rounded-lg animate-pulse" />
+            <div className="h-24 bg-gray-100 rounded-lg animate-pulse" />
+          </>
+        )}
       </div>
 
       {/* Recent Transactions */}
@@ -87,8 +167,10 @@ export default function Dashboard() {
         </CardHeader>
         <CardContent>
           <TransactionList 
-            transactions={transactions}
+            transactions={filteredTransactions}
             maxHeight="400px"
+            isLoading={isLoading}
+            searchQuery={searchQuery}
           />
           <div className="mt-4 flex justify-end">
             <Button variant="outline" size="sm" asChild>

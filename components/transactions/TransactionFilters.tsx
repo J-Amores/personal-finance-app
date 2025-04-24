@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Select,
   SelectContent,
@@ -6,11 +8,13 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+import { SortOrder, CategoryFilter } from '@/types/transaction';
+
 interface TransactionFiltersProps {
-  onSortChange: (value: string) => void;
-  onCategoryChange: (value: string) => void;
-  selectedSort?: string;
-  selectedCategory?: string;
+  onSortChange: (value: SortOrder) => void;
+  onCategoryChange: (value: CategoryFilter) => void;
+  selectedSort?: SortOrder;
+  selectedCategory?: CategoryFilter;
   categories: string[];
 }
 

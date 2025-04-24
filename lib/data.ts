@@ -1,11 +1,9 @@
 import data from '@/data.json';
 
-export interface Transaction {
-  avatar: string;
-  name: string;
-  category: string;
-  date: string;
-  amount: number;
+import { Transaction } from '@/types/transaction';
+
+// Extend Transaction for internal use
+interface InternalTransaction extends Omit<Transaction, 'id'> {
   recurring: boolean;
 }
 
@@ -26,7 +24,12 @@ export function getBalance(): Balance {
 }
 
 export function getTransactions(): Transaction[] {
-  return data.transactions;
+  // Add IDs to transactions
+  return data.transactions.map((t: InternalTransaction, index: number) => ({
+    ...t,
+    id: `t-${index}`,
+    recurring: t.recurring || false
+  }));
 }
 
 export function getBudgets(): Budget[] {

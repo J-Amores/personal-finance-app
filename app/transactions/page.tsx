@@ -1,82 +1,124 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Search, ChevronLeft, ChevronRight } from "lucide-react"
-import { getTransactions, formatCurrency, formatDate } from '@/lib/data';
+'use client'
+
+import { useState } from 'react'
+import { Transaction, SortOrder, CategoryFilter } from '@/types/transaction'
+import { TransactionList } from '@/components/transactions/TransactionList'
+import { TransactionFilters } from '@/components/transactions/TransactionFilters'
+import { TransactionSearch } from '@/components/transactions/transaction-search'
+import { SectionHeader } from '@/components/common/section-header'
+import { StatsCard } from '@/components/common/stats-card'
+import { Card, CardContent } from '@/components/ui/card'
+import { ArrowUpDown, ArrowDownLeft, ArrowUpRight, Receipt } from 'lucide-react'
+import { formatCurrency } from '@/lib/utils'
+import { getTransactions } from '@/lib/data'
 
 export default function TransactionsPage() {
-  const transactions = getTransactions();
+  const transactions = getTransactions()
+  const [sortOrder, setSortOrder] = useState<SortOrder>('latest')
+  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  // Get unique categories
+  const categories = Array.from(new Set(transactions.map(t => t.category)))
+  // Calculate stats
+  const totalTransactions = transactions.length
+  const totalIncome = transactions
+    .filter(t => t.amount > 0)
+    .reduce((sum, t) => sum + t.amount, 0)
+  const totalExpenses = transactions
+    .filter(t => t.amount < 0)
+    .reduce((sum, t) => sum + Math.abs(t.amount), 0)
+  const netAmount = totalIncome - totalExpenses
+
+  // Apply filters and sorting
+  const filteredAndSortedTransactions = transactions
+    .filter(transaction => 
+      transaction.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transaction.category.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .filter(transaction =>
+      selectedCategory === 'all' || 
+      transaction.category.toLowerCase() === selectedCategory.toLowerCase()
+    )
+    .sort((a, b) => {
+      switch (sortOrder) {
+        case 'latest':
+          return new Date(b.date).getTime() - new Date(a.date).getTime()
+        case 'oldest':
+          return new Date(a.date).getTime() - new Date(b.date).getTime()
+        case 'highest':
+          return b.amount - a.amount
+        case 'lowest':
+          return a.amount - b.amount
+        default:
+          return 0
+      }
+    })
+
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Transactions</h1>
+    <div className="container mx-auto py-6 space-y-6">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <StatsCard
+          title="Total Transactions"
+          value={totalTransactions.toString()}
+          icon={Receipt}
+          description="Number of transactions"
+        />
+        <StatsCard
+          title="Total Income"
+          value={formatCurrency(totalIncome)}
+          icon={ArrowUpRight}
+          description="Total incoming transactions"
+        />
+        <StatsCard
+          title="Total Expenses"
+          value={formatCurrency(totalExpenses)}
+          icon={ArrowDownLeft}
+          description="Total outgoing transactions"
+        />
+        <StatsCard
+          title="Net Amount"
+          value={formatCurrency(netAmount)}
+          icon={ArrowUpDown}
+          description="Net transaction amount"
+        />
+      </div>
 
       <Card>
-        <CardContent className="p-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-            <div className="relative w-full md:w-auto md:min-w-[300px]">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input placeholder="Search transaction" className="pl-10" />
-            </div>
-            <div className="flex items-center gap-4 w-full md:w-auto">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">Sort by</span>
-                <Button variant="outline" className="flex items-center">
-                  Latest <span className="ml-2">▼</span>
-                </Button>
+        <SectionHeader
+          title="Transactions"
+          description="View and manage your transactions"
+        />
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="w-full md:w-96">
+                <TransactionSearch onSearch={setSearchQuery} />
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">Category</span>
-                <Button variant="outline" className="flex items-center">
-                  All Transactions <span className="ml-2">▼</span>
-                </Button>
-              </div>
+              <TransactionFilters
+                onSortChange={setSortOrder}
+                onCategoryChange={setSelectedCategory}
+                selectedSort={sortOrder}
+                selectedCategory={selectedCategory}
+                categories={categories}
+              />
             </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="text-left text-sm text-gray-500 border-b">
-                  <th className="pb-2 font-medium">Recipient/Sender</th>
-                  <th className="pb-2 font-medium">Category</th>
-                  <th className="pb-2 font-medium">Transaction Date</th>
-                  <th className="pb-2 font-medium text-right">Amount</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                {transactions.slice(0, 10).map((transaction, index) => (
-                  <tr key={index} className="py-4">
-                    <td className="py-4">
-                      <div className="flex items-center">
-                        <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
-                          <img 
-                            src={transaction.avatar.replace('./', '/')} 
-                            alt={transaction.name} 
-                            className="w-full h-full object-cover" 
-                          />
-                        </div>
-                        <div>{transaction.name}</div>
-                      </div>
-                    </td>
-                    <td className="py-4">{transaction.category}</td>
-                    <td className="py-4">{formatDate(transaction.date)}</td>
-                    <td className={`py-4 text-right font-medium ${transaction.amount > 0 ? 'text-green-600' : ''}`}>
-                      {transaction.amount > 0 ? '+ ' : ''}{formatCurrency(Math.abs(transaction.amount))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="flex justify-between items-center mt-6">
-            <Button variant="outline" size="sm" className="flex items-center gap-1">
-              <ChevronLeft className="h-4 w-4" /> Previous
-            </Button>
-            <div className="text-sm text-gray-500">Page 1 of {Math.ceil(transactions.length / 10)}</div>
-            <Button variant="outline" size="sm" className="flex items-center gap-1">
-              Next <ChevronRight className="h-4 w-4" />
-            </Button>
+            
+            {isLoading ? (
+              <div className="space-y-2">
+                <div className="h-4 w-[250px] bg-muted animate-pulse rounded" />
+                <div className="h-4 w-[200px] bg-muted animate-pulse rounded" />
+                <div className="h-4 w-[300px] bg-muted animate-pulse rounded" />
+              </div>
+            ) : (
+              <TransactionList
+                transactions={filteredAndSortedTransactions}
+                maxHeight="600px"
+                isLoading={isLoading}
+                searchQuery={searchQuery}
+              />
+            )}
           </div>
         </CardContent>
       </Card>

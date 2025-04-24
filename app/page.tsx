@@ -10,7 +10,7 @@ import Link from "next/link"
 import { FinancialSummaryCard } from "@/components/cards/FinancialSummaryCard"
 import { TransactionList } from "@/components/transactions/TransactionList"
 import { TransactionFilters } from "@/components/transactions/TransactionFilters"
-import { SectionHeader } from "@/components/common/SectionHeader"
+import { SectionHeader } from "@/components/common/section-header"
 
 import { getBalance, formatCurrency, getTransactions, Balance } from '@/lib/data';
 import { useState, useEffect } from "react"

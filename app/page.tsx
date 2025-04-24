@@ -1,44 +1,105 @@
+"use client"
+
 import { DollarSign, ChevronRight } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-import { getBalance, formatCurrency } from '@/lib/data';
+import { FinancialSummaryCard } from "@/components/cards/FinancialSummaryCard"
+import { TransactionList } from "@/components/transactions/TransactionList"
+import { TransactionFilters } from "@/components/transactions/TransactionFilters"
+import { SectionHeader } from "@/components/common/SectionHeader"
+
+import { getBalance, formatCurrency, getTransactions } from '@/lib/data';
+import { useState } from "react"
 
 export default function Dashboard() {
   const balance = getBalance();
+  const transactions = getTransactions();
+  const categories = [...new Set(transactions.map(t => t.category))];
+
+  const handleSearch = (value: string) => {
+    // TODO: Implement search functionality
+    console.log('Search:', value);
+  };
+
+  const handleSortChange = (value: string) => {
+    // TODO: Implement sort functionality
+    console.log('Sort:', value);
+  };
+
+  const handleCategoryChange = (value: string) => {
+    // TODO: Implement category filter
+    console.log('Category:', value);
+  };
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Overview</h1>
+      <SectionHeader 
+        title="Overview" 
+        description="Your financial summary and recent activity"
+      />
 
       {/* Financial Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="bg-zinc-900 text-white">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Current Balance</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold">{formatCurrency(balance.current)}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Income</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold">{formatCurrency(balance.income)}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Expenses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold">{formatCurrency(balance.expenses)}</div>
-          </CardContent>
-        </Card>
+        <FinancialSummaryCard
+          title="Current Balance"
+          amount={balance.current}
+          variant="dark"
+        />
+        <FinancialSummaryCard
+          title="Income"
+          amount={balance.income}
+          variant="success"
+        />
+        <FinancialSummaryCard
+          title="Expenses"
+          amount={balance.expenses}
+          variant="destructive"
+        />
       </div>
+
+      {/* Recent Transactions */}
+      <Card className="mb-8">
+        <CardHeader>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex flex-col gap-1">
+              <CardTitle>Recent Transactions</CardTitle>
+              <p className="text-sm text-muted-foreground">Your latest financial activity</p>
+            </div>
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 w-full md:w-auto">
+              <div className="relative w-full md:w-[300px]">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input 
+                  placeholder="Search transactions" 
+                  className="pl-10" 
+                  onChange={(e) => handleSearch(e.target.value)}
+                />
+              </div>
+              <TransactionFilters 
+                onSortChange={handleSortChange}
+                onCategoryChange={handleCategoryChange}
+                categories={categories}
+              />
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <TransactionList 
+            transactions={transactions}
+            maxHeight="400px"
+          />
+          <div className="mt-4 flex justify-end">
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/transactions" className="flex items-center gap-1">
+                View All Transactions
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Pots and Budgets */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

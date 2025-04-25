@@ -50,3 +50,16 @@ export function formatDate(dateString: string): string {
     year: 'numeric',
   });
 }
+
+export function getPots() {
+  return data.pots.map((pot, index) => ({
+    id: `p-${index}`,
+    name: pot.name,
+    description: '',
+    currentAmount: pot.total,
+    targetAmount: pot.target,
+    color: pot.theme,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }));
+}

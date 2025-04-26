@@ -7,7 +7,7 @@ import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-import { FinancialSummaryCard } from "@/components/cards/FinancialSummaryCard"
+import { FinancialSummaryCard } from "@/components/overview/financial-summary-card"
 import { TransactionList } from "@/components/transactions/TransactionList"
 import { TransactionFilters } from "@/components/transactions/TransactionFilters"
 import { SectionHeader } from "@/components/common/section-header"

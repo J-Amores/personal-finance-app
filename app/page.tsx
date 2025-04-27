@@ -1,11 +1,19 @@
 "use client"
 
-import { DollarSign, ChevronRight } from "lucide-react"
+import { DollarSign, ChevronRight, Search, CalendarIcon } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { format, parse, isValid } from "date-fns"
+
+import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 import { FinancialSummaryCard } from "@/components/overview/financial-summary-card"
 import { TransactionList } from "@/components/transactions/TransactionList"
@@ -45,8 +53,9 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
-  const filterTransactions = (transactions: Transaction[], query: string, category: CategoryFilter) => {
+  const filterTransactions = (transactions: Transaction[], query: string, category: CategoryFilter, date?: Date) => {
     return transactions.filter(transaction => {
       const matchesSearch = query === '' || 
         transaction.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -56,7 +65,10 @@ export default function Dashboard() {
       const matchesCategory = category === 'all' || 
         transaction.category.toLowerCase() === category.toLowerCase();
 
-      return matchesSearch && matchesCategory;
+      const matchesDate = !date || 
+        new Date(transaction.date).toDateString() === date.toDateString();
+
+      return matchesSearch && matchesCategory && matchesDate;
     });
   };
 
@@ -77,21 +89,28 @@ export default function Dashboard() {
 
   const handleSearch = (value: string) => {
     setSearchQuery(value);
-    const filtered = filterTransactions(allTransactions, value, selectedCategory);
+    const filtered = filterTransactions(allTransactions, value, selectedCategory, selectedDate);
     const sorted = sortTransactions(filtered, sortOrder);
     setFilteredTransactions(sorted);
   };
 
   const handleSortChange = (value: SortOrder) => {
     setSortOrder(value);
-    const filtered = filterTransactions(allTransactions, searchQuery, selectedCategory);
+    const filtered = filterTransactions(allTransactions, searchQuery, selectedCategory, selectedDate);
     const sorted = sortTransactions(filtered, value);
     setFilteredTransactions(sorted);
   };
 
   const handleCategoryChange = (value: string) => {
     setSelectedCategory(value);
-    const filtered = filterTransactions(allTransactions, searchQuery, value);
+    const filtered = filterTransactions(allTransactions, searchQuery, value, selectedDate);
+    const sorted = sortTransactions(filtered, sortOrder);
+    setFilteredTransactions(sorted);
+  };
+
+  const handleDateChange = (date: Date | undefined) => {
+    setSelectedDate(date);
+    const filtered = filterTransactions(allTransactions, searchQuery, selectedCategory, date);
     const sorted = sortTransactions(filtered, sortOrder);
     setFilteredTransactions(sorted);
   };
@@ -107,8 +126,6 @@ export default function Dashboard() {
         title="Overview" 
         description="Your financial summary and recent activity"
       />
-
-
 
       {/* Financial Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -140,52 +157,8 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Recent Transactions */}
-      <Card className="mb-8">
-        <CardHeader>
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div className="flex flex-col gap-1">
-              <CardTitle>Recent Transactions</CardTitle>
-              <p className="text-sm text-muted-foreground">Your latest financial activity</p>
-            </div>
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 w-full md:w-auto">
-              <div className="relative w-full md:w-[300px]">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input 
-                  placeholder="Search transactions" 
-                  className="pl-10" 
-                  onChange={(e) => handleSearch(e.target.value)}
-                />
-              </div>
-              <TransactionFilters 
-                onSortChange={handleSortChange}
-                onCategoryChange={handleCategoryChange}
-                categories={categories}
-              />
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <TransactionList 
-            transactions={filteredTransactions}
-            maxHeight="400px"
-            isLoading={isLoading}
-            searchQuery={searchQuery}
-          />
-          <div className="mt-4 flex justify-end">
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/transactions" className="flex items-center gap-1">
-                View All Transactions
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Pots and Budgets */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Pots Section */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-xl font-bold">Pots</CardTitle>
@@ -259,107 +232,217 @@ export default function Dashboard() {
             </Link>
           </CardHeader>
           <CardContent>
-            <div className="flex justify-center mb-4">
-              <DonutChart />
+            <div className="flex justify-between items-center mb-6">
+              <div className="space-y-1">
+                <h3 className="text-2xl font-bold">$1,850</h3>
+                <p className="text-sm text-muted-foreground">Total Budget</p>
+              </div>
+              <div className="space-y-1 text-right">
+                <h3 className="text-2xl font-bold text-red-500">$1,245</h3>
+                <p className="text-sm text-muted-foreground">Spent</p>
+              </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-3">
-              <div className="flex items-center">
-                <div className="w-3 h-3 bg-emerald-500 rounded-sm mr-2"></div>
-                <span className="text-sm">Entertainment</span>
+
+            <div className="space-y-4">
+              {/* Entertainment Budget */}
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-emerald-500 rounded-sm"></div>
+                    <span className="text-sm font-medium">Entertainment</span>
+                  </div>
+                  <span className="text-sm">$245 / $400</span>
+                </div>
+                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-emerald-500 rounded-full" style={{ width: '61.25%' }}></div>
+                </div>
               </div>
-              <div className="flex items-center">
-                <div className="w-3 h-3 bg-sky-400 rounded-sm mr-2"></div>
-                <span className="text-sm">Bills</span>
+
+              {/* Bills Budget */}
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-sky-400 rounded-sm"></div>
+                    <span className="text-sm font-medium">Bills</span>
+                  </div>
+                  <span className="text-sm">$580 / $600</span>
+                </div>
+                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-sky-400 rounded-full" style={{ width: '96.67%' }}></div>
+                </div>
               </div>
-              <div className="flex items-center">
-                <div className="w-3 h-3 bg-orange-300 rounded-sm mr-2"></div>
-                <span className="text-sm">Dining Out</span>
+
+              {/* Dining Out Budget */}
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-orange-300 rounded-sm"></div>
+                    <span className="text-sm font-medium">Dining Out</span>
+                  </div>
+                  <span className="text-sm">$320 / $450</span>
+                </div>
+                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-orange-300 rounded-full" style={{ width: '71.11%' }}></div>
+                </div>
               </div>
-              <div className="flex items-center">
-                <div className="w-3 h-3 bg-gray-600 rounded-sm mr-2"></div>
-                <span className="text-sm">Personal Care</span>
+
+              {/* Personal Care Budget */}
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-gray-600 rounded-sm"></div>
+                    <span className="text-sm font-medium">Personal Care</span>
+                  </div>
+                  <span className="text-sm">$100 / $400</span>
+                </div>
+                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-gray-600 rounded-full" style={{ width: '25%' }}></div>
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Transactions Section */}
-      <Card className="mb-8">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-xl font-bold">Transactions</CardTitle>
-          <Link href="/transactions" className="flex items-center text-sm text-gray-500 hover:text-gray-900">
-            View All <ChevronRight size={16} />
-          </Link>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-amber-800 rounded-full flex items-center justify-center mr-3">
-                  <DollarSign size={16} className="text-white" />
-                </div>
-                <div>Savory Bites Bistro</div>
+      {/* Transactions and Bills */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        {/* Recent Transactions */}
+        <Card>
+          <CardHeader>
+            <div className="space-y-4">
+              <div className="flex flex-col gap-1">
+                <CardTitle>Recent Transactions</CardTitle>
+                <p className="text-sm text-muted-foreground">Your latest financial activity</p>
               </div>
-              <div className="text-right">
-                <div className="font-semibold">- $55.50</div>
-                <div className="text-sm text-gray-500">Aug 19, 2024</div>
+              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                <div className="relative w-full sm:w-[200px] flex-shrink-0">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input 
+                    placeholder="Search transactions" 
+                    className="pl-10" 
+                    onChange={(e) => handleSearch(e.target.value)}
+                  />
+                </div>
+                <div className="relative w-full sm:w-[200px]">
+                  <div className="relative">
+                    <Input
+                      placeholder="MM/DD/YYYY"
+                      value={selectedDate ? format(selectedDate, "MM/dd/yyyy") : ""}
+                      onChange={(e) => {
+                        const date = parse(e.target.value, "MM/dd/yyyy", new Date());
+                        if (isValid(date)) {
+                          handleDateChange(date);
+                        } else if (e.target.value === "") {
+                          handleDateChange(undefined);
+                        }
+                      }}
+                      className="pl-10"
+                    />
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="absolute left-0 top-0 h-full px-3 hover:bg-transparent"
+                        >
+                          <CalendarIcon className="h-4 w-4 text-gray-400" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={selectedDate}
+                          onSelect={handleDateChange}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+                <TransactionFilters 
+                  onSortChange={handleSortChange}
+                  onCategoryChange={handleCategoryChange}
+                  categories={categories}
+                />
               </div>
             </div>
+          </CardHeader>
+          <CardContent>
+            <TransactionList 
+              transactions={filteredTransactions}
+              maxHeight="300px"
+              isLoading={isLoading}
+              searchQuery={searchQuery}
+            />
+            <div className="mt-4 flex justify-end">
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/transactions" className="flex items-center gap-1">
+                  View All Transactions
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden mr-3">
-                  <div className="w-full h-full bg-gray-400"></div>
-                </div>
-                <div>Emma Richardson</div>
-              </div>
-              <div className="text-right">
-                <div className="font-semibold text-green-600">+ $75.50</div>
-                <div className="text-sm text-gray-500">Aug 19, 2024</div>
-              </div>
+        {/* Recurring Bills Section */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <div className="space-y-1">
+              <CardTitle className="text-xl font-bold">Recurring Bills</CardTitle>
+              <p className="text-sm text-muted-foreground">Upcoming payments</p>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+            <Link href="/recurring-bills" className="flex items-center text-sm text-gray-500 hover:text-gray-900">
+              See Details <ChevronRight size={16} />
+            </Link>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center mb-6">
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold">$135.00</h3>
+                  <p className="text-sm text-muted-foreground">Due this month</p>
+                </div>
+                <div className="space-y-1 text-right">
+                  <h3 className="text-2xl font-bold text-green-500">2</h3>
+                  <p className="text-sm text-muted-foreground">Bills pending</p>
+                </div>
+              </div>
 
-      {/* Recurring Bills Section */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-xl font-bold">Recurring Bills</CardTitle>
-          <Link href="/recurring-bills" className="flex items-center text-sm text-gray-500 hover:text-gray-900">
-            See Details <ChevronRight size={16} />
-          </Link>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="w-8 h-8 bg-sky-600 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-white text-xs">AQ</span>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-sky-600 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-white text-xs">AQ</span>
+                    </div>
+                    <div>
+                      <div>Aqua Flow Utilities</div>
+                      <div className="text-sm text-muted-foreground">Monthly - 30th</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-semibold">$100.00</div>
+                  </div>
                 </div>
-                <div>Aqua Flow Utilities</div>
-              </div>
-              <div className="text-right">
-                <div className="font-semibold">$100.00</div>
-                <div className="text-sm text-gray-500">Monthly - 30th</div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-white text-xs">EF</span>
+                    </div>
+                    <div>
+                      <div>EcoFuel Energy</div>
+                      <div className="text-sm text-muted-foreground">Monthly - 29th</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-semibold">$35.00</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-white text-xs">EF</span>
-                </div>
-                <div>EcoFuel Energy</div>
-              </div>
-              <div className="text-right">
-                <div className="font-semibold">$35.00</div>
-                <div className="text-sm text-gray-500">Monthly - 29th</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

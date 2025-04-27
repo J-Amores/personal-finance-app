@@ -1,6 +1,7 @@
 'use client';
 
-import { formatDate } from '@/lib/data';
+import { useState } from 'react';
+import { formatDate } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -16,8 +17,11 @@ import {
 } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Button } from "@/components/ui/button"
+import { PlusCircle, Pencil } from "lucide-react"
 
 import { Transaction } from '@/types/transaction';
+import { TransactionDialog } from './transaction-dialog';
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -25,6 +29,8 @@ interface TransactionListProps {
   showScrollbar?: boolean;
   isLoading?: boolean;
   searchQuery?: string;
+  onTransactionCreate?: (transaction: Transaction) => void;
+  onTransactionUpdate?: (transaction: Transaction) => void;
 }
 
 export function TransactionList({ 
@@ -32,8 +38,12 @@ export function TransactionList({
   maxHeight = "400px",
   showScrollbar = true,
   isLoading = false,
-  searchQuery = ''
+  searchQuery = '',
+  onTransactionCreate,
+  onTransactionUpdate,
 }: TransactionListProps) {
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | undefined>(undefined)
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -44,6 +54,21 @@ export function TransactionList({
 
   return (
     <div className="relative w-full" style={{ height: maxHeight }}>
+      <div className="mb-4 flex justify-between items-center">
+        <h2 className="text-lg font-semibold">Transactions</h2>
+        {onTransactionCreate && (
+          <Button
+            onClick={() => {
+              setSelectedTransaction(undefined)
+              setDialogOpen(true)
+            }}
+            size="sm"
+          >
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add Transaction
+          </Button>
+        )}
+      </div>
       <ScrollArea className="h-full w-full" scrollHideDelay={0}>
         <div className="overflow-x-auto">
           <Table>
@@ -129,15 +154,42 @@ export function TransactionList({
                   <Badge variant="secondary">{transaction.category}</Badge>
                 </TableCell>
                 <TableCell>{formatDate(transaction.date)}</TableCell>
-                <TableCell className={`text-right font-medium ${transaction.amount > 0 ? 'text-green-600' : ''}`}>
-                  {transaction.amount > 0 ? '+ ' : ''}{formatCurrency(transaction.amount)}
+                <TableCell className={transaction.amount >= 0 ? 'text-green-600' : 'text-red-600'}>
+                  {formatCurrency(transaction.amount)}
                 </TableCell>
+                {onTransactionUpdate && (
+                  <TableCell className="w-[50px]">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setSelectedTransaction(transaction)
+                        setDialogOpen(true)
+                      }}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
             </TableBody>
           </Table>
         </div>
       </ScrollArea>
+      
+      <TransactionDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        transaction={selectedTransaction}
+        onSubmit={(data) => {
+          if (selectedTransaction) {
+            onTransactionUpdate?.(data)
+          } else {
+            onTransactionCreate?.(data)
+          }
+        }}
+      />
     </div>
   );
 }

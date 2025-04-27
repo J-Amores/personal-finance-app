@@ -4,9 +4,8 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { PotCard } from '@/components/pots/pot-card';
 import { PotForm } from '@/components/pots/pot-form';
-import { Pot, PotFormData } from '@/types/pot';
-
-import { getPots } from '@/lib/data';
+import { Pot, PotFormData } from '@/types/pots';
+import { getPots } from '@/lib/pots';
 
 export default function PotsPage() {
   const [pots, setPots] = useState<Pot[]>(getPots());
@@ -69,12 +68,12 @@ export default function PotsPage() {
 
       <PotForm
         open={isFormOpen}
-        onClose={() => {
-          setIsFormOpen(false);
-          setSelectedPot(undefined);
+        onOpenChange={(open) => {
+          setIsFormOpen(open);
+          if (!open) setSelectedPot(undefined);
         }}
         onSubmit={selectedPot ? handleEditPot : handleCreatePot}
-        initialData={selectedPot}
+        pot={selectedPot}
       />
     </div>
   );

@@ -1,150 +1,183 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Pot, PotFormData } from "@/types/pot";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Pot } from "@/types/pots";
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Pot name must be at least 2 characters.",
+  }),
+  description: z.string().optional(),
+  targetAmount: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+    message: "Please enter a valid target amount greater than 0.",
+  }),
+  currentAmount: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
+    message: "Please enter a valid current amount (0 or greater).",
+  }),
+  color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
+    message: "Please enter a valid hex color code.",
+  }),
+});
 
 interface PotFormProps {
   open: boolean;
-  onClose: () => void;
-  onSubmit: (data: PotFormData) => void;
-  initialData?: Pot;
+  onOpenChange: (open: boolean) => void;
+  onSubmit: (data: Pot) => void;
+  pot?: Pot;
 }
 
-export function PotForm({ open, onClose, onSubmit, initialData }: PotFormProps) {
-  const [formData, setFormData] = useState<PotFormData>(() => ({
-    name: initialData?.name ?? '',
-    description: initialData?.description ?? '',
-    currentAmount: initialData?.currentAmount ?? 0,
-    targetAmount: initialData?.targetAmount ?? 0,
-    color: initialData?.color ?? '#10B981' // Default emerald color
-  }));
+export function PotForm({ open, onOpenChange, onSubmit, pot }: PotFormProps) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: pot?.name || "",
+      description: pot?.description || "",
+      currentAmount: pot?.currentAmount.toString() || "0",
+      targetAmount: pot?.targetAmount.toString() || "0",
+      color: pot?.color || "#10B981",
+    },
+  });
 
-  useEffect(() => {
-    if (initialData) {
-      setFormData({
-        name: initialData.name,
-        description: initialData.description ?? '',
-        currentAmount: initialData.currentAmount,
-        targetAmount: initialData.targetAmount,
-        color: initialData.color
-      });
-    }
-  }, [initialData]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-    onClose();
-  };
+  function handleSubmit(values: z.infer<typeof formSchema>) {
+    onSubmit({
+      id: pot?.id || crypto.randomUUID(),
+      name: values.name,
+      description: values.description,
+      currentAmount: Number(values.currentAmount),
+      targetAmount: Number(values.targetAmount),
+      color: values.color,
+    });
+    onOpenChange(false);
+  }
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
-            {initialData ? 'Edit Pot' : 'Create New Pot'}
+            {pot ? 'Edit Pot' : 'Create New Pot'}
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData(prev => ({
-                ...prev,
-                name: e.target.value
-              }))}
-              required
+
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Savings Pot Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => setFormData(prev => ({
-                ...prev,
-                description: e.target.value
-              }))}
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="What are you saving for?"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="currentAmount">Current Amount</Label>
-              <Input
-                id="currentAmount"
-                type="number"
-                min="0"
-                step="0.01"
-                value={formData.currentAmount}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  currentAmount: parseFloat(e.target.value) || 0
-                }))}
-                required
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="currentAmount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Current Amount</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="targetAmount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Target Amount</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="targetAmount">Target Amount</Label>
-              <Input
-                id="targetAmount"
-                type="number"
-                min="0"
-                step="0.01"
-                value={formData.targetAmount}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  targetAmount: parseFloat(e.target.value) || 0
-                }))}
-                required
-              />
-            </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="color">Color</Label>
-            <div className="flex gap-2">
-              <Input
-                id="color"
-                type="color"
-                value={formData.color}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  color: e.target.value
-                }))}
-                className="w-12 h-10 p-1"
-                required
-              />
-              <Input
-                value={formData.color}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  color: e.target.value
-                }))}
-                className="flex-1"
-                required
-              />
-            </div>
-          </div>
+            <FormField
+              control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="color"
+                      className="h-10 px-2 py-1"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button type="submit">
-              {initialData ? 'Save Changes' : 'Create Pot'}
-            </Button>
-          </div>
-        </form>
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                {pot ? 'Update' : 'Create'} Pot
+              </Button>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

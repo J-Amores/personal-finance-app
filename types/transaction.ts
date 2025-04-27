@@ -5,6 +5,13 @@ export interface Transaction {
   category: string;
   date: string;
   amount: number;
+  type: 'income' | 'expense';
+}
+
+export interface Balance {
+  current: number;
+  income: number;
+  expenses: number;
 }
 
 export type SortOrder = 'latest' | 'oldest' | 'highest' | 'lowest';

@@ -20,7 +20,10 @@ import { TransactionList } from "@/components/transactions/TransactionList"
 import { TransactionFilters } from "@/components/transactions/TransactionFilters"
 import { SectionHeader } from "@/components/common/section-header"
 
-import { getBalance, formatCurrency, getTransactions, Balance } from '@/lib/data';
+import { formatCurrency } from '@/lib/utils';
+import { getTransactionStats } from '@/lib/transactions';
+import type { Balance } from '@/types/transaction';
+import { getTransactions, saveTransaction, filterTransactions, sortTransactions } from '@/lib/transactions';
 import { useState, useEffect } from "react"
 
 import { Transaction, SortOrder, CategoryFilter } from '@/types/transaction';
@@ -33,9 +36,9 @@ export default function Dashboard() {
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
   
   // Fetch data
-  useEffect(() => {
+  const loadTransactions = () => {
     try {
-      const balanceData = getBalance();
+      const balanceData = getTransactionStats();
       const transactionsData = getTransactions();
       setBalance(balanceData);
       setAllTransactions(transactionsData);
@@ -46,7 +49,21 @@ export default function Dashboard() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  useEffect(() => {
+    loadTransactions();
   }, []);
+
+  const handleTransactionCreate = (transaction: Transaction) => {
+    saveTransaction(transaction);
+    loadTransactions(); // Reload all transactions
+  };
+
+  const handleTransactionUpdate = (transaction: Transaction) => {
+    saveTransaction(transaction);
+    loadTransactions(); // Reload all transactions
+  };
 
   const categories = [...new Set(allTransactions.map(t => t.category))];
 
@@ -369,9 +386,10 @@ export default function Dashboard() {
           <CardContent>
             <TransactionList 
               transactions={filteredTransactions}
-              maxHeight="300px"
               isLoading={isLoading}
               searchQuery={searchQuery}
+              onTransactionCreate={handleTransactionCreate}
+              onTransactionUpdate={handleTransactionUpdate}
             />
             <div className="mt-4 flex justify-end">
               <Button variant="outline" size="sm" asChild>

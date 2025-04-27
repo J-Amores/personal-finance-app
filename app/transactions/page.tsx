@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Transaction, SortOrder, CategoryFilter } from '@/types/transaction'
+import type { Transaction, SortOrder, CategoryFilter } from '@/types/transaction'
 import { TransactionList } from '@/components/transactions/TransactionList'
 import { TransactionFilters } from '@/components/transactions/TransactionFilters'
 import { TransactionSearch } from '@/components/transactions/transaction-search'
@@ -10,7 +10,7 @@ import { StatsCard } from '@/components/common/stats-card'
 import { Card, CardContent } from '@/components/ui/card'
 import { ArrowUpDown, ArrowDownLeft, ArrowUpRight, Receipt } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
-import { getTransactions } from '@/lib/data'
+import { getTransactions } from '@/lib/transactions'
 
 export default function TransactionsPage() {
   const transactions = getTransactions()
@@ -20,15 +20,15 @@ export default function TransactionsPage() {
   const [isLoading, setIsLoading] = useState(false)
 
   // Get unique categories
-  const categories = Array.from(new Set(transactions.map(t => t.category)))
+  const categories = Array.from(new Set(transactions.map((t: Transaction) => t.category)))
   // Calculate stats
   const totalTransactions = transactions.length
   const totalIncome = transactions
-    .filter(t => t.amount > 0)
-    .reduce((sum, t) => sum + t.amount, 0)
+    .filter((t: Transaction) => t.type === 'income')
+    .reduce((sum: number, t: Transaction) => sum + t.amount, 0)
   const totalExpenses = transactions
-    .filter(t => t.amount < 0)
-    .reduce((sum, t) => sum + Math.abs(t.amount), 0)
+    .filter((t: Transaction) => t.type === 'expense')
+    .reduce((sum: number, t: Transaction) => sum + Math.abs(t.amount), 0)
   const netAmount = totalIncome - totalExpenses
 
   // Apply filters and sorting

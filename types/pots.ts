@@ -10,3 +10,5 @@ export interface Pot {
 }
 
 export type PotFormData = Omit<Pot, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type PotSortOrder = 'name' | 'amount' | 'progress' | 'created';

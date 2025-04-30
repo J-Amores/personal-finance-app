@@ -12,12 +12,13 @@ export function formatCurrency(amount: number): string {
   }).format(amount)
 }
 
-export function formatDate(dateString: string, options: Intl.DateTimeFormatOptions = {
+export function formatDate(date: string | Date, options: Intl.DateTimeFormatOptions = {
   month: 'short',
   day: 'numeric',
   year: 'numeric',
 }): string {
-  return new Date(dateString).toLocaleDateString('en-US', options)
+  const dateObj = typeof date === 'string' ? new Date(date) : date
+  return dateObj.toLocaleDateString('en-US', options)
 }
 
 export function formatDateWithTime(dateString: string): string {

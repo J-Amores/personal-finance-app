@@ -10,11 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-} from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
@@ -30,9 +25,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { useRouter } from 'next/navigation'
 
 import { Transaction } from '@/types/transaction';
 import { TransactionDialog } from './transaction-dialog';
+import { deleteTransaction } from '@/app/actions/transactions';
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -40,9 +37,6 @@ interface TransactionListProps {
   showScrollbar?: boolean;
   isLoading?: boolean;
   searchQuery?: string;
-  onTransactionCreate?: (transaction: Transaction) => void;
-  onTransactionUpdate?: (transaction: Transaction) => void;
-  onTransactionDelete?: (id: string) => void;
 }
 
 export function TransactionList({ 
@@ -51,10 +45,8 @@ export function TransactionList({
   showScrollbar = true,
   isLoading = false,
   searchQuery = '',
-  onTransactionCreate,
-  onTransactionUpdate,
-  onTransactionDelete,
 }: TransactionListProps) {
+  const router = useRouter()
   const { toast } = useToast()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -71,17 +63,15 @@ export function TransactionList({
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold tracking-tight">Transactions</h2>
-        {onTransactionCreate && (
-          <Button
-            onClick={() => {
-              setSelectedTransaction(undefined)
-              setDialogOpen(true)
-            }}
-          >
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add Transaction
-          </Button>
-        )}
+        <Button
+          onClick={() => {
+            setSelectedTransaction(undefined)
+            setDialogOpen(true)
+          }}
+        >
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Add Transaction
+        </Button>
       </div>
 
       <ScrollArea className={cn("relative", showScrollbar ? "pr-4" : "")} style={{ maxHeight }}>
@@ -139,11 +129,7 @@ export function TransactionList({
                 <TableRow key={transaction.id}>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src={transaction.avatar} alt={transaction.name} />
-                        <AvatarFallback>{transaction.name[0]}</AvatarFallback>
-                      </Avatar>
-                      {transaction.name}
+                      {transaction.description}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -159,30 +145,26 @@ export function TransactionList({
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
-                      {onTransactionUpdate && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => {
-                            setSelectedTransaction(transaction)
-                            setDialogOpen(true)
-                          }}
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                      )}
-                      {onTransactionDelete && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => {
-                            setSelectedTransaction(transaction)
-                            setDeleteDialogOpen(true)
-                          }}
-                        >
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        </Button>
-                      )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          setSelectedTransaction(transaction)
+                          setDialogOpen(true)
+                        }}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          setSelectedTransaction(transaction)
+                          setDeleteDialogOpen(true)
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4 text-red-500" />
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -223,27 +205,32 @@ export function TransactionList({
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              transaction from your account.
+              This action cannot be undone. This will permanently delete the transaction.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setSelectedTransaction(undefined)}>
-              Cancel
-            </AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => {
+              onClick={async () => {
                 if (selectedTransaction) {
-                  onTransactionDelete?.(selectedTransaction.id)
-                  toast({
-                    title: "Transaction deleted",
-                    description: "Your transaction has been deleted successfully.",
-                  })
+                  const result = await deleteTransaction(selectedTransaction.id)
+                  if (result.error) {
+                    toast({
+                      title: "Error",
+                      description: result.error,
+                      variant: "destructive",
+                    })
+                  } else {
+                    toast({
+                      title: "Success",
+                      description: "Transaction deleted successfully",
+                    })
+                    router.refresh()
+                  }
                 }
-                setSelectedTransaction(undefined)
                 setDeleteDialogOpen(false)
               }}
-              className="bg-red-500 hover:bg-red-600"
+              className="bg-red-600 hover:bg-red-700"
             >
               Delete
             </AlertDialogAction>

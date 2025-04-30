@@ -1,11 +1,12 @@
 export interface Transaction {
   id: string;
-  name: string;
-  avatar: string;
+  description: string;
   category: string;
-  date: string;
+  date: Date;
   amount: number;
   type: 'income' | 'expense';
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface Balance {

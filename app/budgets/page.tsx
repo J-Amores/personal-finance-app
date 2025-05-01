@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
@@ -8,31 +8,26 @@ import { BudgetList } from "@/components/budgets/budget-list"
 import { BudgetSummaryCard } from "@/components/budgets/budget-summary-card"
 import { Budget, BudgetSummary } from "@/types/budget"
 import { BudgetForm } from "@/components/budgets/budget-form"
-import data from '@/data.json'
-
-// Calculate spent amounts from transactions
-const calculateSpentByCategory = (category: string): number => {
-  return data.transactions
-    .filter(t => t.category === category && t.amount < 0)
-    .reduce((total, t) => total + Math.abs(t.amount), 0)
-}
-
-// Transform budgets data from data.json
-const initialBudgets: Budget[] = data.budgets.map((budget, index) => ({
-  id: String(index + 1),
-  category: budget.category,
-  amount: budget.maximum,
-  spent: calculateSpentByCategory(budget.category),
-  period: 'monthly',
-  color: budget.theme,
-  createdAt: new Date(),
-  updatedAt: new Date()
-}))
+import { getBudgets, createBudget, updateBudget, deleteBudget } from '@/app/actions/budgets'
 
 export default function BudgetsPage() {
-  const [budgets, setBudgets] = useState<Budget[]>(initialBudgets)
+  const [budgets, setBudgets] = useState<Budget[]>([])
   const [showForm, setShowForm] = useState(false)
   const [editingBudget, setEditingBudget] = useState<Budget | null>(null)
+
+  // Fetch budgets on mount and when transactions change
+  useEffect(() => {
+    const loadBudgets = async () => {
+      const { data, error } = await getBudgets()
+      if (data) {
+        setBudgets(data)
+      } else if (error) {
+        console.error('Error loading budgets:', error)
+      }
+    }
+
+    loadBudgets()
+  }, [])
 
   // Calculate budget summary from current budgets state
   const summary: BudgetSummary = {
@@ -41,18 +36,23 @@ export default function BudgetsPage() {
     remainingBudget: budgets.reduce((total, budget) => total + (budget.amount - budget.spent), 0)
   }
 
-  const handleAddBudget = (newBudget: Partial<Budget>) => {
-    const budget: Budget = {
-      id: String(budgets.length + 1),
+  const handleAddBudget = async (newBudget: Partial<Budget>) => {
+    const { data, error } = await createBudget({
       category: newBudget.category!,
       amount: newBudget.amount!,
-      spent: 0,
       period: 'monthly',
-      color: newBudget.color!,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      color: newBudget.color!, // Map color to theme for database
+    })
+
+    if (data) {
+      const { data: updatedBudgets } = await getBudgets()
+      if (updatedBudgets) {
+        setBudgets(updatedBudgets)
+      }
+      setShowForm(false)
+    } else if (error) {
+      console.error('Error creating budget:', error)
     }
-    setBudgets([...budgets, budget])
   }
 
   const handleEditBudget = (budget: Budget) => {
@@ -60,28 +60,38 @@ export default function BudgetsPage() {
     setShowForm(true)
   }
 
-  const handleUpdateBudget = (updatedBudget: Partial<Budget>) => {
+  const handleUpdateBudget = async (updatedBudget: Partial<Budget>) => {
     if (!editingBudget) return
 
-    const updated = budgets.map(budget => {
-      if (budget.id === editingBudget.id) {
-        return {
-          ...budget,
-          category: updatedBudget.category ?? budget.category,
-          amount: updatedBudget.amount ?? budget.amount,
-          color: updatedBudget.color ?? budget.color,
-          updatedAt: new Date()
-        }
-      }
-      return budget
+    const { data, error } = await updateBudget(editingBudget.id, {
+      category: updatedBudget.category,
+      amount: updatedBudget.amount,
+      color: updatedBudget.color, // Map color to theme for database
     })
 
-    setBudgets(updated)
-    setEditingBudget(null)
+    if (data) {
+      const { data: updatedBudgets } = await getBudgets()
+      if (updatedBudgets) {
+        setBudgets(updatedBudgets)
+      }
+      setEditingBudget(null)
+      setShowForm(false)
+    } else if (error) {
+      console.error('Error updating budget:', error)
+    }
   }
 
-  const handleDeleteBudget = (budget: Budget) => {
-    setBudgets(budgets.filter(b => b.id !== budget.id))
+  const handleDeleteBudget = async (budget: Budget) => {
+    const { error } = await deleteBudget(budget.id)
+    
+    if (!error) {
+      const { data: updatedBudgets } = await getBudgets()
+      if (updatedBudgets) {
+        setBudgets(updatedBudgets)
+      }
+    } else {
+      console.error('Error deleting budget:', error)
+    }
   }
   return (
     <div className="p-8 space-y-6">

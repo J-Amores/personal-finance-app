@@ -2,7 +2,7 @@
 
 import { Budget, BudgetProgress } from '@/types/budget'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
+import { CircleProgress } from '@/components/ui/circle-progress'
 import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { BudgetActions } from './budget-actions'
@@ -20,6 +20,17 @@ export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
            budget.spent / budget.amount > 0.8 ? 'near' : 'under'
   }
 
+  const getStatusColor = (status: BudgetProgress['status']) => {
+    switch (status) {
+      case 'over':
+        return 'hsl(var(--destructive))'
+      case 'near':
+        return 'hsl(var(--warning))'
+      default:
+        return 'hsl(var(--primary))'
+    }
+  }
+
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -27,29 +38,34 @@ export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
           {budget.category}
         </CardTitle>
         <div className="flex items-center gap-2">
-        <Badge 
-          variant={progress.status === 'over' ? 'destructive' : 
-                 progress.status === 'near' ? 'secondary' : 'default'}
-        >
-          {progress.status === 'over' ? 'Over Budget' :
-           progress.status === 'near' ? 'Near Limit' : 'On Track'}
-        </Badge>
-        <BudgetActions budget={budget} onEdit={onEdit} onDelete={onDelete} />
+          <Badge 
+            variant={progress.status === 'over' ? 'destructive' : 
+                   progress.status === 'near' ? 'secondary' : 'default'}
+          >
+            {progress.status === 'over' ? 'Over Budget' :
+             progress.status === 'near' ? 'Near Limit' : 'On Track'}
+          </Badge>
+          <BudgetActions budget={budget} onEdit={onEdit} onDelete={onDelete} />
         </div>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">
-          {formatCurrency(budget.spent)} 
-          <span className="text-sm text-muted-foreground">
-            / {formatCurrency(budget.amount)}
-          </span>
-        </div>
-        <Progress 
-          value={Math.min(progress.percentage, 100)} 
-          className={`mt-2 [&>div]:bg-[${budget.color}]`}
-        />
-        <div className="mt-2 text-xs text-muted-foreground">
-          {budget.period === 'monthly' ? 'Monthly' : 'Yearly'} Budget
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(budget.spent)} 
+              <span className="text-sm text-muted-foreground">
+                / {formatCurrency(budget.amount)}
+              </span>
+            </div>
+            <div className="mt-1 text-xs text-muted-foreground">
+              {budget.period === 'monthly' ? 'Monthly' : 'Yearly'} Budget
+            </div>
+          </div>
+          <CircleProgress 
+            value={Math.min(progress.percentage, 100)}
+            color={getStatusColor(progress.status)}
+            size={60}
+          />
         </div>
       </CardContent>
     </Card>

@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { Transaction } from '@/types/transaction'
+import { updateBudgetSpending } from './budgets'
 
 type TransactionInput = Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>
 
@@ -49,44 +50,39 @@ export async function createTransaction(data: TransactionInput) {
       data: {
         ...data,
         type: data.type, // Prisma will validate this matches the schema
-      }
+      },
     })
 
-    const typedTransaction: Transaction = {
-      ...transaction,
-      type: transaction.type as 'income' | 'expense',
+    // Update budget spending when a transaction is created
+    if (data.type === 'expense') {
+      await updateBudgetSpending()
     }
 
     revalidatePath('/transactions')
-    revalidatePath('/')
-    return { data: typedTransaction }
+    revalidatePath('/budgets')
+    return { data: transaction }
   } catch (error) {
     console.error('Error creating transaction:', error)
     return { error: 'Failed to create transaction' }
   }
 }
 
-export async function updateTransaction(
-  id: string,
-  data: TransactionInput
-) {
+export async function updateTransaction(id: string, data: TransactionInput) {
   try {
     const transaction = await prisma.transaction.update({
       where: { id },
       data: {
         ...data,
         type: data.type,
-      }
+      },
     })
 
-    const typedTransaction: Transaction = {
-      ...transaction,
-      type: transaction.type as 'income' | 'expense',
-    }
+    // Update budget spending when a transaction is updated
+    await updateBudgetSpending()
 
     revalidatePath('/transactions')
-    revalidatePath('/')
-    return { data: typedTransaction }
+    revalidatePath('/budgets')
+    return { data: transaction }
   } catch (error) {
     console.error('Error updating transaction:', error)
     return { error: 'Failed to update transaction' }
@@ -95,11 +91,21 @@ export async function updateTransaction(
 
 export async function deleteTransaction(id: string) {
   try {
-    await prisma.transaction.delete({
-      where: { id }
+    const transaction = await prisma.transaction.findUnique({
+      where: { id },
     })
+
+    await prisma.transaction.delete({
+      where: { id },
+    })
+
+    // Update budget spending when a transaction is deleted
+    if (transaction?.type === 'expense') {
+      await updateBudgetSpending()
+    }
+
     revalidatePath('/transactions')
-    revalidatePath('/')
+    revalidatePath('/budgets')
     return { success: true }
   } catch (error) {
     console.error('Error deleting transaction:', error)

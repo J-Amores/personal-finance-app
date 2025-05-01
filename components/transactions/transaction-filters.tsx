@@ -8,6 +8,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
 
 interface TransactionFiltersProps {
   sortOrder: SortOrder;
@@ -15,6 +24,11 @@ interface TransactionFiltersProps {
   categoryFilter: CategoryFilter;
   onCategoryChange: (value: CategoryFilter) => void;
   categories: string[];
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  onDateChange: (start: Date | undefined, end: Date | undefined) => void;
+  transactionType: 'all' | 'income' | 'expense';
+  onTransactionTypeChange: (value: 'all' | 'income' | 'expense') => void;
 }
 
 export function TransactionFilters({
@@ -23,25 +37,16 @@ export function TransactionFilters({
   categoryFilter,
   onCategoryChange,
   categories,
+  startDate,
+  endDate,
+  onDateChange,
+  transactionType,
+  onTransactionTypeChange,
 }: TransactionFiltersProps) {
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-      <Select value={sortOrder} onValueChange={(value) => onSortChange(value as SortOrder)}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Sort by" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="latest">Latest First</SelectItem>
-          <SelectItem value="oldest">Oldest First</SelectItem>
-          <SelectItem value="highest">Highest Amount</SelectItem>
-          <SelectItem value="lowest">Lowest Amount</SelectItem>
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={categoryFilter}
-        onValueChange={(value) => onCategoryChange(value as CategoryFilter)}
-      >
+    <div className="flex flex-wrap gap-2">
+      {/* Category Filter */}
+      <Select value={categoryFilter} onValueChange={onCategoryChange}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Filter by category" />
         </SelectTrigger>

@@ -32,22 +32,14 @@ interface TransactionFormProps {
   transaction?: Transaction;
   onSubmit: (data: Partial<Transaction>) => Promise<void>;
   onCancel: () => void;
+  categories: string[];
 }
-
-const categories = [
-  'Groceries',
-  'Transportation',
-  'Entertainment',
-  'Bills',
-  'Shopping',
-  'Healthcare',
-  'Other',
-];
 
 export function TransactionForm({
   transaction,
   onSubmit,
   onCancel,
+  categories,
 }: TransactionFormProps) {
   const form = useForm<Partial<Transaction>>({
     defaultValues: {
@@ -89,7 +81,7 @@ export function TransactionForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {categories.map((category) => (
+                  {categories.map((category: string) => (
                     <SelectItem key={category} value={category}>
                       {category}
                     </SelectItem>

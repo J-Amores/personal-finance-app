@@ -14,6 +14,7 @@ interface TransactionDialogProps {
   onOpenChange: (open: boolean) => void;
   transaction?: Transaction;
   onSubmit: (data: Partial<Transaction>) => Promise<void>;
+  categories: string[];
 }
 
 export function TransactionDialog({
@@ -21,6 +22,7 @@ export function TransactionDialog({
   onOpenChange,
   transaction,
   onSubmit,
+  categories,
 }: TransactionDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -34,6 +36,7 @@ export function TransactionDialog({
           transaction={transaction}
           onSubmit={onSubmit}
           onCancel={() => onOpenChange(false)}
+          categories={categories}
         />
       </DialogContent>
     </Dialog>

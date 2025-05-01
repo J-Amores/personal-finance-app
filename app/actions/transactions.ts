@@ -7,21 +7,27 @@ import { updateBudgetSpending } from './budgets'
 
 type TransactionInput = Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>
 
-export async function getTransactions(query?: string, category?: string, sortOrder: string = 'latest') {
+interface TransactionFilters {
+  query?: string;
+  category?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+export async function getTransactions(filters: TransactionFilters = {}) {
   try {
     const where = {
-      ...(query && {
-        OR: [
-          { description: { contains: query, mode: 'insensitive' } },
-          { category: { contains: query, mode: 'insensitive' } },
-        ],
-      }),
-      ...(category && { category }),
+      AND: [
+        // Search query filter
+        filters.query ? {
+          description: { contains: filters.query }
+        } : {},
+        // Category filter
+        filters.category && filters.category !== 'all' ? { category: filters.category } : {},
+      ].filter(condition => Object.keys(condition).length > 0),
     }
 
     const orderBy = {
-      date: sortOrder === 'oldest' ? 'asc' : 'desc',
-      amount: sortOrder === 'highest' ? 'desc' : sortOrder === 'lowest' ? 'asc' : undefined,
+      date: filters.sortOrder,
     }
 
     const transactions = await prisma.transaction.findMany({
@@ -49,6 +55,8 @@ export async function createTransaction(data: TransactionInput) {
     const transaction = await prisma.transaction.create({
       data: {
         ...data,
+        // Ensure date is a proper Date object
+        date: new Date(data.date),
         type: data.type, // Prisma will validate this matches the schema
       },
     })

@@ -1,44 +1,45 @@
-import { PrismaClient } from '@prisma/client'
-
-interface DataType {
-  balance: {
-    current: number
-    income: number
-    expenses: number
-  }
-  transactions: {
-    avatar: string
-    name: string
-    category: string
-    date: string
-    amount: number
-    recurring: boolean
-    description: string
-  }[]
-  budgets: {
-    category: string
-    maximum: number
-    theme: string
-  }[]
-  pots: {
-    name: string
-    target: number
-    total: number
-    theme: string
-  }[]
-  bills: {
-    name: string
-    amount: number
-    dueDate: string
-    isPaid: boolean
-    category: string
-  }[]
-}
-
-import { readFileSync } from 'fs'
-const data: DataType = JSON.parse(readFileSync('./data.json', 'utf-8'))
+import { PrismaClient, TransactionType } from '@prisma/client'
 
 const prisma = new PrismaClient()
+
+interface CategoryDetails {
+  isIncome: boolean
+  typical: number
+  budget?: number
+}
+
+// Categories with their typical monthly budgets
+const categories: Record<string, CategoryDetails> = {
+  'Salary': { isIncome: true, typical: 5000 },
+  'Freelance': { isIncome: true, typical: 2000 },
+  'Rent': { isIncome: false, typical: 1800, budget: 2000 },
+  'Groceries': { isIncome: false, typical: 500, budget: 600 },
+  'Dining Out': { isIncome: false, typical: 300, budget: 400 },
+  'Transportation': { isIncome: false, typical: 200, budget: 250 },
+  'Entertainment': { isIncome: false, typical: 150, budget: 200 },
+  'Shopping': { isIncome: false, typical: 200, budget: 300 },
+  'Healthcare': { isIncome: false, typical: 100, budget: 200 },
+  'Utilities': { isIncome: false, typical: 150, budget: 200 },
+  'Savings': { isIncome: false, typical: 1000, budget: 1000 },
+  'Investment': { isIncome: false, typical: 500, budget: 500 }
+}
+
+// Themes for visual variety
+const themes = [
+  'red', 'blue', 'green', 'yellow', 'purple', 'pink',
+  'orange', 'indigo', 'teal', 'cyan', 'emerald', 'violet'
+]
+
+// Function to generate a random date within a range
+function randomDate(start: Date, end: Date) {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+}
+
+// Function to add some randomness to amounts
+function randomizeAmount(base: number, variance: number = 0.2) {
+  const variation = base * variance
+  return base + (Math.random() * variation * 2 - variation)
+}
 
 async function main() {
   try {
@@ -50,80 +51,134 @@ async function main() {
 
     console.log('🗑️  Cleared existing data')
 
-    // Seed transactions
-    const transactions = await Promise.all(
-      data.transactions.map(async (transaction) => {
-        return prisma.transaction.create({
-          data: {
-            amount: transaction.amount,
-            type: transaction.amount > 0 ? 'income' : 'expense',
-            category: transaction.category,
-            description: transaction.name, // Use name as description since that's what we have in the data
-            date: new Date(transaction.date),
-          },
-        })
-      })
+    // Generate 6 months of transactions
+    const endDate = new Date()
+    const startDate = new Date(endDate)
+    startDate.setMonth(endDate.getMonth() - 6)
+
+    // Create transactions
+    const transactions = []
+    for (const [category, details] of Object.entries(categories)) {
+      // Generate monthly transactions
+      for (let month = 0; month < 6; month++) {
+        const monthStart = new Date(startDate)
+        monthStart.setMonth(startDate.getMonth() + month)
+        const monthEnd = new Date(monthStart)
+        monthEnd.setMonth(monthStart.getMonth() + 1)
+
+        // Generate 1-3 transactions per category per month
+        const numTransactions = details.isIncome ? 1 : Math.floor(Math.random() * 3) + 1
+        for (let i = 0; i < numTransactions; i++) {
+          const amount = details.isIncome ? details.typical : -details.typical / numTransactions
+          transactions.push({
+            amount: randomizeAmount(amount),
+            type: details.isIncome ? TransactionType.income : TransactionType.expense,
+            category,
+            description: `${category} - ${month + 1}`,
+            date: randomDate(monthStart, monthEnd),
+          })
+        }
+      }
+    }
+
+    // Create transactions in database
+    const createdTransactions = await Promise.all(
+      transactions.map(transaction =>
+        prisma.transaction.create({ data: transaction })
+      )
     )
 
-    console.log(`💰 Created ${transactions.length} transactions`)
+    console.log(`💰 Created ${createdTransactions.length} transactions`)
 
-    // Seed budgets
+    // Create budgets
     const budgets = await Promise.all(
-      data.budgets.map(async (budget) => {
-        // Calculate spent amount from transactions
-        const spent = data.transactions
-          .filter(t => t.category === budget.category && t.amount < 0)
-          .reduce((total, t) => total + Math.abs(t.amount), 0)
-
-        return prisma.budget.create({
-          data: {
-            category: budget.category,
-            amount: budget.maximum,
-            spent,
-            period: 'monthly',
-            theme: budget.theme,
-          },
-        })
-      })
+      Object.entries(categories)
+        .filter(([_, details]) => !details.isIncome && 'budget' in details)
+        .map(([category, details], index) =>
+          prisma.budget.create({
+            data: {
+              category,
+              amount: details.budget!,
+              spent: 0, // This will be updated by the application
+              period: 'monthly',
+              theme: themes[index % themes.length],
+            },
+          })
+        )
     )
 
     console.log(`📊 Created ${budgets.length} budgets`)
 
-    // Seed pots
-    const pots = await Promise.all(
-      data.pots.map(async (pot) => {
-        return prisma.pot.create({
-          data: {
-            name: pot.name,
-            target: pot.target,
-            total: pot.total,
-            theme: pot.theme,
-          },
-        })
-      })
-    )
+    // Create savings pots
+    const pots = await Promise.all([
+      {
+        name: 'Emergency Fund',
+        target: 10000,
+        total: 5000,
+        theme: 'blue'
+      },
+      {
+        name: 'Vacation',
+        target: 3000,
+        total: 1500,
+        theme: 'yellow'
+      },
+      {
+        name: 'New Car',
+        target: 20000,
+        total: 8000,
+        theme: 'green'
+      },
+      {
+        name: 'Home Down Payment',
+        target: 50000,
+        total: 15000,
+        theme: 'purple'
+      }
+    ].map(pot => prisma.pot.create({ data: pot })))
 
     console.log(`🏺 Created ${pots.length} pots`)
 
-    // Seed bills (if they exist)
-    if (data.bills) {
-      const bills = await Promise.all(
-        data.bills.map(async (bill) => {
-          return prisma.bill.create({
-            data: {
-              name: bill.name,
-              amount: bill.amount,
-              dueDate: new Date(bill.dueDate),
-              isPaid: bill.isPaid,
-              category: bill.category,
-            },
-          })
-        })
-      )
-      console.log(`📝 Created ${bills.length} bills`)
-    } else {
-      console.log('ℹ️  No bills to seed')
-    }
+    // Create bills
+    const bills = await Promise.all([
+      {
+        name: 'Rent',
+        amount: 1800,
+        dueDate: new Date(endDate.getFullYear(), endDate.getMonth() + 1, 1),
+        isPaid: false,
+        category: 'Rent'
+      },
+      {
+        name: 'Electricity',
+        amount: 80,
+        dueDate: new Date(endDate.getFullYear(), endDate.getMonth() + 1, 15),
+        isPaid: false,
+        category: 'Utilities'
+      },
+      {
+        name: 'Internet',
+        amount: 70,
+        dueDate: new Date(endDate.getFullYear(), endDate.getMonth() + 1, 10),
+        isPaid: true,
+        category: 'Utilities'
+      },
+      {
+        name: 'Phone',
+        amount: 50,
+        dueDate: new Date(endDate.getFullYear(), endDate.getMonth() + 1, 5),
+        isPaid: true,
+        category: 'Utilities'
+      },
+      {
+        name: 'Gym Membership',
+        amount: 40,
+        dueDate: new Date(endDate.getFullYear(), endDate.getMonth() + 1, 1),
+        isPaid: false,
+        category: 'Entertainment'
+      }
+    ].map(bill => prisma.bill.create({ data: bill })))
+
+    console.log(`📝 Created ${bills.length} bills`)
 
   } catch (error) {
     console.error('Error seeding database:', error)

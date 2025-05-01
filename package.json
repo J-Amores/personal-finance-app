@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "db:seed": "ts-node scripts/seed-db.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -62,11 +66,12 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
-    "@types/node": "^22",
+    "@types/node": "^22.15.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "postcss": "^8",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }

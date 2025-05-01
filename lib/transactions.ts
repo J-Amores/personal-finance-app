@@ -15,21 +15,33 @@ export function getTransactions(): Transaction[] {
   }
 }
 
-export function saveTransaction(transaction: Transaction): void {
-  if (typeof window === "undefined") return
+export function saveTransaction(transaction: Transaction): Transaction {
+  if (typeof window === "undefined") throw new Error('Cannot save transaction in server environment');
   
-  const transactions = getTransactions()
-  const index = transactions.findIndex((t) => t.id === transaction.id)
+  const transactions = getTransactions();
+  const index = transactions.findIndex((t) => t.id === transaction.id);
+  
+  // Ensure transaction has an ID
+  if (!transaction.id) {
+    transaction.id = crypto.randomUUID();
+  }
+  
+  // Ensure dates are set
+  if (!transaction.createdAt) {
+    transaction.createdAt = new Date();
+  }
+  transaction.updatedAt = new Date();
   
   if (index >= 0) {
     // Update existing transaction
-    transactions[index] = transaction
+    transactions[index] = transaction;
   } else {
     // Add new transaction
-    transactions.unshift(transaction)
+    transactions.unshift(transaction);
   }
   
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions))
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+  return transaction;
 }
 
 export function deleteTransaction(id: string): void {
@@ -71,7 +83,7 @@ export function filterTransactions(
   
   return transactions.filter((transaction) => {
     const matchesSearch =
-      transaction.name.toLowerCase().includes(searchTerm) ||
+      transaction.description.toLowerCase().includes(searchTerm) ||
       transaction.category.toLowerCase().includes(searchTerm)
     
     const matchesCategory =

@@ -1,13 +1,8 @@
-"use client"
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { CalendarIcon } from "lucide-react"
-import { format } from "date-fns"
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { useForm } from 'react-hook-form';
+import { Transaction } from '@/types/transaction';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -15,112 +10,66 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Calendar } from "@/components/ui/calendar"
+} from '@/components/ui/select';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Transaction } from "@/types/transaction"
-
-const categories = [
-  "Food & Dining",
-  "Shopping",
-  "Transportation",
-  "Bills & Utilities",
-  "Entertainment",
-  "Health & Fitness",
-  "Travel",
-  "Income",
-  "Other"
-]
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Transaction name must be at least 2 characters.",
-  }),
-  amount: z.string().refine((val) => !isNaN(Number(val)) && Number(val) !== 0, {
-    message: "Please enter a valid amount.",
-  }),
-  category: z.string({
-    required_error: "Please select a category.",
-  }),
-  date: z.date({
-    required_error: "Please select a date.",
-  }),
-})
+} from '@/components/ui/popover';
+import { CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
 
 interface TransactionFormProps {
-  transaction?: Transaction
-  onSubmit: (data: Transaction) => void
-  onCancel: () => void
+  transaction?: Transaction;
+  onSubmit: (data: Partial<Transaction>) => Promise<void>;
+  onCancel: () => void;
 }
+
+const categories = [
+  'Groceries',
+  'Transportation',
+  'Entertainment',
+  'Bills',
+  'Shopping',
+  'Healthcare',
+  'Other',
+];
 
 export function TransactionForm({
   transaction,
   onSubmit,
   onCancel,
 }: TransactionFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<Partial<Transaction>>({
     defaultValues: {
-      name: transaction?.name || "",
-      amount: transaction?.amount.toString() || "",
-      category: transaction?.category || "",
-      date: transaction?.date ? new Date(transaction.date) : new Date(),
+      description: transaction?.description || '',
+      category: transaction?.category || '',
+      amount: transaction?.amount || 0,
+      type: transaction?.type || 'expense',
+      date: transaction?.date || new Date(),
     },
-  })
-
-  function handleSubmit(values: z.infer<typeof formSchema>) {
-    onSubmit({
-      id: transaction?.id || crypto.randomUUID(),
-      name: values.name,
-      amount: Number(values.amount),
-      category: values.category,
-      date: values.date.toISOString(),
-      avatar: transaction?.avatar || "/placeholder-avatar.png",
-    })
-  }
+  });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="name"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder="Transaction name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Amount</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  step="0.01"
-                  placeholder="0.00"
-                  {...field}
-                />
+                <Input {...field} placeholder="Enter description" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -136,7 +85,7 @@ export function TransactionForm({
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -154,6 +103,47 @@ export function TransactionForm({
 
         <FormField
           control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Amount</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  step="0.01"
+                  {...field}
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="income">Income</SelectItem>
+                  <SelectItem value="expense">Expense</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="date"
           render={({ field }) => (
             <FormItem className="flex flex-col">
@@ -161,15 +151,9 @@ export function TransactionForm({
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
+                    <Button variant="outline">
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(field.value, 'PPP')
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -183,7 +167,7 @@ export function TransactionForm({
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
+                      date > new Date() || date < new Date('1900-01-01')
                     }
                     initialFocus
                   />
@@ -194,15 +178,15 @@ export function TransactionForm({
           )}
         />
 
-        <div className="flex justify-end space-x-2">
+        <div className="flex justify-end gap-2">
           <Button type="button" variant="outline" onClick={onCancel}>
             Cancel
           </Button>
           <Button type="submit">
-            {transaction ? "Update" : "Create"} Transaction
+            {transaction ? 'Update' : 'Create'} Transaction
           </Button>
         </div>
       </form>
     </Form>
-  )
+  );
 }

@@ -1,0 +1,1515 @@
+{
+  "transactions": [
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "General",
+      "amount": -117.79,
+      "recurring": true,
+      "date": "2025-05-24T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Entertainment",
+      "amount": -65.03,
+      "recurring": true,
+      "date": "2025-05-13T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "amount": -77.36,
+      "recurring": true,
+      "date": "2025-05-06T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "amount": -254.11,
+      "recurring": true,
+      "date": "2025-05-06T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
+      "name": "Sofia Peterson",
+      "category": "Groceries",
+      "date": "2025-04-28T18:42:11.403Z",
+      "amount": 89.11,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "date": "2025-04-27T16:47:31.453Z",
+      "amount": -232.19,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Groceries",
+      "date": "2025-04-26T22:45:37.585Z",
+      "amount": 133.94,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sun-park.jpg",
+      "name": "Sun Park",
+      "category": "Healthcare",
+      "date": "2025-04-26T21:04:44.575Z",
+      "amount": -302.45,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "Healthcare",
+      "date": "2025-04-25T05:34:18.608Z",
+      "amount": 232.17,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Entertainment",
+      "amount": -65.03,
+      "recurring": true,
+      "date": "2025-04-25T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "Shopping",
+      "date": "2025-04-24T15:35:26.361Z",
+      "amount": -75.45,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "General",
+      "date": "2025-04-24T05:13:51.933Z",
+      "amount": -138.38,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Healthcare",
+      "date": "2025-04-22T14:22:07.514Z",
+      "amount": -320,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "amount": -77.36,
+      "recurring": true,
+      "date": "2025-04-21T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Groceries",
+      "date": "2025-04-20T01:11:25.588Z",
+      "amount": -75.14,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Shopping",
+      "date": "2025-04-18T13:30:37.874Z",
+      "amount": 150.7,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/mason-martinez.jpg",
+      "name": "Mason Martinez",
+      "category": "Healthcare",
+      "date": "2025-04-18T13:12:46.681Z",
+      "amount": 250.73,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/james-thompson.jpg",
+      "name": "James Thompson",
+      "category": "Shopping",
+      "date": "2025-04-15T20:58:19.714Z",
+      "amount": 65.29,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "General",
+      "date": "2025-04-15T18:55:20.895Z",
+      "amount": 55.92,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Dining Out",
+      "date": "2025-04-15T17:56:22.984Z",
+      "amount": -68.37,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "Dining Out",
+      "date": "2025-04-12T02:05:48.089Z",
+      "amount": 86.07,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/lily-ramirez.jpg",
+      "name": "Lily Ramirez",
+      "category": "Groceries",
+      "date": "2025-04-11T13:34:38.357Z",
+      "amount": -153.73,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "General",
+      "amount": -117.79,
+      "recurring": true,
+      "date": "2025-04-11T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Entertainment",
+      "date": "2025-04-10T12:18:45.477Z",
+      "amount": 71.74,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "Bills",
+      "date": "2025-04-08T20:20:37.669Z",
+      "amount": -244.92,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Dining Out",
+      "date": "2025-04-07T20:42:32.924Z",
+      "amount": -46.55,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Shopping",
+      "date": "2025-04-05T06:17:51.304Z",
+      "amount": -100.48,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Bills",
+      "date": "2025-04-04T11:56:12.419Z",
+      "amount": -170.11,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Entertainment",
+      "date": "2025-04-03T11:38:48.210Z",
+      "amount": 43.39,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "General",
+      "date": "2025-04-02T23:15:56.010Z",
+      "amount": -156.15,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Transportation",
+      "date": "2025-04-01T04:53:42.211Z",
+      "amount": 47.7,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "amount": -254.11,
+      "recurring": true,
+      "date": "2025-04-01T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Transportation",
+      "date": "2025-03-25T07:05:03.353Z",
+      "amount": -38.19,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
+      "name": "Sofia Peterson",
+      "category": "General",
+      "date": "2025-03-25T01:27:52.995Z",
+      "amount": -142.57,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Transportation",
+      "date": "2025-03-24T22:10:34.713Z",
+      "amount": -48.24,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/mason-martinez.jpg",
+      "name": "Mason Martinez",
+      "category": "Healthcare",
+      "date": "2025-03-23T11:36:56.385Z",
+      "amount": -494.95,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
+      "name": "Sofia Peterson",
+      "category": "Shopping",
+      "date": "2025-03-23T00:44:22.286Z",
+      "amount": 37.84,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Groceries",
+      "date": "2025-03-22T14:39:18.806Z",
+      "amount": 45.86,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Entertainment",
+      "date": "2025-03-21T15:11:50.254Z",
+      "amount": -12.48,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Groceries",
+      "date": "2025-03-21T07:23:44.654Z",
+      "amount": -111.45,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "General",
+      "amount": -117.79,
+      "recurring": true,
+      "date": "2025-03-17T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "amount": -254.11,
+      "recurring": true,
+      "date": "2025-03-17T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Dining Out",
+      "date": "2025-03-17T02:42:31.667Z",
+      "amount": -69.6,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Entertainment",
+      "date": "2025-03-15T21:13:04.408Z",
+      "amount": -98.92,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Groceries",
+      "date": "2025-03-15T14:20:13.572Z",
+      "amount": -78.54,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Healthcare",
+      "date": "2025-03-15T06:28:53.277Z",
+      "amount": 137.08,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "amount": -77.36,
+      "recurring": true,
+      "date": "2025-03-13T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "Healthcare",
+      "date": "2025-03-10T21:38:48.838Z",
+      "amount": -444.37,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "General",
+      "date": "2025-03-10T01:50:49.811Z",
+      "amount": 184.76,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Bills",
+      "date": "2025-03-07T22:45:03.108Z",
+      "amount": -112.74,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "Groceries",
+      "date": "2025-03-07T07:05:53.311Z",
+      "amount": -157.87,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Entertainment",
+      "amount": -65.03,
+      "recurring": true,
+      "date": "2025-03-07T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "Entertainment",
+      "date": "2025-02-28T03:39:03.579Z",
+      "amount": -65.78,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
+      "name": "Sofia Peterson",
+      "category": "Shopping",
+      "date": "2025-02-27T15:27:50.513Z",
+      "amount": -66.95,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Groceries",
+      "date": "2025-02-24T05:45:37.456Z",
+      "amount": -57.27,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Transportation",
+      "date": "2025-02-23T09:23:58.116Z",
+      "amount": -37.67,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "amount": -254.11,
+      "recurring": true,
+      "date": "2025-02-23T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/mason-martinez.jpg",
+      "name": "Mason Martinez",
+      "category": "Transportation",
+      "date": "2025-02-21T21:26:56.594Z",
+      "amount": 34.23,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Transportation",
+      "date": "2025-02-18T20:53:44.672Z",
+      "amount": 25.65,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "date": "2025-02-18T14:55:13.908Z",
+      "amount": -26.91,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Healthcare",
+      "date": "2025-02-16T19:10:25.341Z",
+      "amount": -174.42,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sun-park.jpg",
+      "name": "Sun Park",
+      "category": "Shopping",
+      "date": "2025-02-16T05:49:03.234Z",
+      "amount": -93.27,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
+      "name": "Sofia Peterson",
+      "category": "Dining Out",
+      "date": "2025-02-16T04:59:12.178Z",
+      "amount": -97.93,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/lily-ramirez.jpg",
+      "name": "Lily Ramirez",
+      "category": "Transportation",
+      "date": "2025-02-14T17:39:37.924Z",
+      "amount": 13.12,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Entertainment",
+      "date": "2025-02-11T09:10:52.407Z",
+      "amount": 75.72,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Entertainment",
+      "amount": -65.03,
+      "recurring": true,
+      "date": "2025-02-09T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "General",
+      "amount": -117.79,
+      "recurring": true,
+      "date": "2025-02-08T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/sun-park.jpg",
+      "name": "Sun Park",
+      "category": "Bills",
+      "date": "2025-02-07T00:27:17.886Z",
+      "amount": -193.27,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/mason-martinez.jpg",
+      "name": "Mason Martinez",
+      "category": "Entertainment",
+      "date": "2025-02-06T20:40:39.450Z",
+      "amount": -25.01,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "amount": -77.36,
+      "recurring": true,
+      "date": "2025-02-06T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Transportation",
+      "date": "2025-02-04T21:08:35.858Z",
+      "amount": -43.01,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Shopping",
+      "date": "2025-01-30T18:32:58.924Z",
+      "amount": 51.33,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/mason-martinez.jpg",
+      "name": "Mason Martinez",
+      "category": "General",
+      "date": "2025-01-29T18:53:07.320Z",
+      "amount": -112.75,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "date": "2025-01-27T23:05:16.856Z",
+      "amount": -83.43,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/james-thompson.jpg",
+      "name": "James Thompson",
+      "category": "Groceries",
+      "date": "2025-01-26T19:25:50.621Z",
+      "amount": 142.79,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Transportation",
+      "date": "2025-01-26T17:50:24.674Z",
+      "amount": 5.03,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Shopping",
+      "date": "2025-01-25T09:35:18.883Z",
+      "amount": 95.42,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Entertainment",
+      "date": "2025-01-25T02:28:38.121Z",
+      "amount": -30.77,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "Entertainment",
+      "date": "2025-01-25T01:13:35.554Z",
+      "amount": -71.56,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Shopping",
+      "date": "2025-01-24T03:53:10.238Z",
+      "amount": 39.63,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Healthcare",
+      "date": "2025-01-23T22:18:18.060Z",
+      "amount": -425.77,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
+      "name": "Sofia Peterson",
+      "category": "General",
+      "date": "2025-01-21T16:30:16.131Z",
+      "amount": -139.5,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sun-park.jpg",
+      "name": "Sun Park",
+      "category": "Bills",
+      "date": "2025-01-17T03:50:52.307Z",
+      "amount": -232.59,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Groceries",
+      "date": "2025-01-16T17:23:42.468Z",
+      "amount": -62.6,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "General",
+      "amount": -117.79,
+      "recurring": true,
+      "date": "2025-01-16T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/sun-park.jpg",
+      "name": "Sun Park",
+      "category": "Shopping",
+      "date": "2025-01-15T21:41:03.460Z",
+      "amount": -139.23,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Transportation",
+      "date": "2025-01-15T10:39:00.334Z",
+      "amount": -15.87,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "date": "2025-01-14T20:17:36.927Z",
+      "amount": -145.72,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "Groceries",
+      "date": "2025-01-14T18:27:12.071Z",
+      "amount": 135.68,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "Bills",
+      "date": "2025-01-12T05:51:58.419Z",
+      "amount": 299.01,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "amount": -254.11,
+      "recurring": true,
+      "date": "2025-01-12T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Bills",
+      "date": "2025-01-11T17:12:06.727Z",
+      "amount": -299.94,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "amount": -77.36,
+      "recurring": true,
+      "date": "2025-01-11T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Entertainment",
+      "amount": -65.03,
+      "recurring": true,
+      "date": "2025-01-10T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "Groceries",
+      "date": "2025-01-06T02:27:48.998Z",
+      "amount": 68.15,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Groceries",
+      "date": "2025-01-04T01:43:32.222Z",
+      "amount": -134.05,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Shopping",
+      "date": "2025-01-01T20:56:22.383Z",
+      "amount": 92.21,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Groceries",
+      "date": "2024-12-29T09:22:36.190Z",
+      "amount": -108.68,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Dining Out",
+      "date": "2024-12-29T08:09:17.266Z",
+      "amount": -97,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/james-thompson.jpg",
+      "name": "James Thompson",
+      "category": "Healthcare",
+      "date": "2024-12-28T08:00:20.078Z",
+      "amount": 164.23,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ethan-clark.jpg",
+      "name": "Ethan Clark",
+      "category": "Groceries",
+      "date": "2024-12-27T09:04:27.688Z",
+      "amount": -196.89,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "General",
+      "date": "2024-12-26T00:40:05.219Z",
+      "amount": 21.03,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/daniel-carter.jpg",
+      "name": "Daniel Carter",
+      "category": "Transportation",
+      "date": "2024-12-25T14:49:47.580Z",
+      "amount": -43.47,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "date": "2024-12-24T13:11:03.686Z",
+      "amount": -180.68,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/lily-ramirez.jpg",
+      "name": "Lily Ramirez",
+      "category": "Shopping",
+      "date": "2024-12-24T10:57:30.046Z",
+      "amount": -68.56,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Entertainment",
+      "date": "2024-12-21T11:59:46.216Z",
+      "amount": -83.84,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Groceries",
+      "date": "2024-12-20T23:00:57.530Z",
+      "amount": 52.25,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ethan-clark.jpg",
+      "name": "Ethan Clark",
+      "category": "Groceries",
+      "date": "2024-12-16T16:10:06.193Z",
+      "amount": -105.39,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ethan-clark.jpg",
+      "name": "Ethan Clark",
+      "category": "Bills",
+      "date": "2024-12-15T03:57:17.101Z",
+      "amount": -250.42,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/daniel-carter.jpg",
+      "name": "Daniel Carter",
+      "category": "Groceries",
+      "date": "2024-12-14T20:28:28.232Z",
+      "amount": 43.89,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Entertainment",
+      "amount": -65.03,
+      "recurring": true,
+      "date": "2024-12-14T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/james-thompson.jpg",
+      "name": "James Thompson",
+      "category": "Entertainment",
+      "date": "2024-12-13T13:41:41.308Z",
+      "amount": 85.71,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "amount": -254.11,
+      "recurring": true,
+      "date": "2024-12-13T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Dining Out",
+      "date": "2024-12-11T07:32:20.062Z",
+      "amount": -43.34,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "amount": -77.36,
+      "recurring": true,
+      "date": "2024-12-11T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
+      "name": "Sofia Peterson",
+      "category": "Dining Out",
+      "date": "2024-12-11T04:51:39.737Z",
+      "amount": -50.14,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/james-thompson.jpg",
+      "name": "James Thompson",
+      "category": "Bills",
+      "date": "2024-12-09T22:05:14.009Z",
+      "amount": -51.83,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "General",
+      "amount": -117.79,
+      "recurring": true,
+      "date": "2024-12-08T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "Entertainment",
+      "date": "2024-12-04T23:51:34.347Z",
+      "amount": -19.41,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Groceries",
+      "date": "2024-12-04T14:35:53.471Z",
+      "amount": 143.58,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "Shopping",
+      "date": "2024-12-04T09:55:54.631Z",
+      "amount": -132.85,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "General",
+      "date": "2024-12-03T16:19:30.638Z",
+      "amount": -92.47,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Entertainment",
+      "date": "2024-12-01T02:45:31.718Z",
+      "amount": -40.14,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
+      "name": "Sofia Peterson",
+      "category": "Shopping",
+      "date": "2024-11-30T04:42:18.787Z",
+      "amount": -184.24,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Groceries",
+      "date": "2024-11-29T12:32:49.828Z",
+      "amount": -152.9,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "date": "2024-11-29T12:26:33.050Z",
+      "amount": -85.91,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/daniel-carter.jpg",
+      "name": "Daniel Carter",
+      "category": "Entertainment",
+      "date": "2024-11-29T01:48:28.851Z",
+      "amount": -21.05,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/lily-ramirez.jpg",
+      "name": "Lily Ramirez",
+      "category": "Transportation",
+      "date": "2024-11-28T13:57:26.769Z",
+      "amount": -33.97,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Healthcare",
+      "date": "2024-11-28T09:36:36.180Z",
+      "amount": 59.79,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/james-thompson.jpg",
+      "name": "James Thompson",
+      "category": "Healthcare",
+      "date": "2024-11-28T07:11:00.414Z",
+      "amount": -286.97,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Dining Out",
+      "date": "2024-11-25T18:18:55.185Z",
+      "amount": -75.24,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Transportation",
+      "date": "2024-11-25T18:15:35.400Z",
+      "amount": -13.47,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Bills",
+      "date": "2024-11-25T14:25:22.369Z",
+      "amount": 60.29,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Bills",
+      "date": "2024-11-24T14:45:14.362Z",
+      "amount": -276.03,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ethan-clark.jpg",
+      "name": "Ethan Clark",
+      "category": "Entertainment",
+      "date": "2024-11-24T02:54:13.302Z",
+      "amount": -47.32,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/lily-ramirez.jpg",
+      "name": "Lily Ramirez",
+      "category": "Healthcare",
+      "date": "2024-11-23T12:58:21.518Z",
+      "amount": 101.64,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ethan-clark.jpg",
+      "name": "Ethan Clark",
+      "category": "Transportation",
+      "date": "2024-11-23T04:57:14.839Z",
+      "amount": 46.75,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "date": "2024-11-19T20:35:43.650Z",
+      "amount": 98.08,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Entertainment",
+      "amount": -65.03,
+      "recurring": true,
+      "date": "2024-11-19T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "amount": -254.11,
+      "recurring": true,
+      "date": "2024-11-19T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/mason-martinez.jpg",
+      "name": "Mason Martinez",
+      "category": "Transportation",
+      "date": "2024-11-18T11:42:44.352Z",
+      "amount": -22.4,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Groceries",
+      "date": "2024-11-15T06:05:58.993Z",
+      "amount": -89.87,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Shopping",
+      "date": "2024-11-13T15:30:50.688Z",
+      "amount": 38.2,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Entertainment",
+      "date": "2024-11-12T23:04:29.816Z",
+      "amount": 81.48,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/sun-park.jpg",
+      "name": "Sun Park",
+      "category": "General",
+      "date": "2024-11-12T05:34:49.016Z",
+      "amount": -129.04,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "General",
+      "amount": -117.79,
+      "recurring": true,
+      "date": "2024-11-10T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Shopping",
+      "date": "2024-11-08T06:02:32.874Z",
+      "amount": 106.61,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Dining Out",
+      "date": "2024-11-08T03:24:05.360Z",
+      "amount": -20.91,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/daniel-carter.jpg",
+      "name": "Daniel Carter",
+      "category": "Entertainment",
+      "date": "2024-11-07T11:15:17.167Z",
+      "amount": -21.79,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "amount": -77.36,
+      "recurring": true,
+      "date": "2024-11-05T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Bills",
+      "date": "2024-11-05T02:11:32.713Z",
+      "amount": -280.15,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/lily-ramirez.jpg",
+      "name": "Lily Ramirez",
+      "category": "Groceries",
+      "date": "2024-11-04T18:40:08.191Z",
+      "amount": 196.33,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/daniel-carter.jpg",
+      "name": "Daniel Carter",
+      "category": "Groceries",
+      "date": "2024-11-03T19:37:13.543Z",
+      "amount": -113.53,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "Bills",
+      "date": "2024-11-03T18:19:59.412Z",
+      "amount": 252.96,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "General",
+      "date": "2024-11-02T08:52:34.833Z",
+      "amount": -132.68,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Dining Out",
+      "date": "2024-11-01T07:31:28.178Z",
+      "amount": -32.86,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Bills",
+      "date": "2024-10-31T05:40:44.011Z",
+      "amount": -278.72,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/james-thompson.jpg",
+      "name": "James Thompson",
+      "category": "General",
+      "date": "2024-10-30T04:59:50.925Z",
+      "amount": 71.37,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "Dining Out",
+      "date": "2024-10-29T21:28:34.045Z",
+      "amount": 90.01,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "General",
+      "date": "2024-10-28T17:44:22.709Z",
+      "amount": -180.67,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "Groceries",
+      "date": "2024-10-25T21:12:30.134Z",
+      "amount": -79.26,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/emma-richardson.jpg",
+      "name": "Emma Richardson",
+      "category": "Groceries",
+      "date": "2024-10-25T10:30:55.181Z",
+      "amount": -41.65,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
+      "name": "Savory Bites Bistro",
+      "category": "Dining Out",
+      "amount": -77.36,
+      "recurring": true,
+      "date": "2024-10-25T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Transportation",
+      "date": "2024-10-23T18:51:04.495Z",
+      "amount": -45.47,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "Bills",
+      "amount": -254.11,
+      "recurring": true,
+      "date": "2024-10-23T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/ella-phillips.jpg",
+      "name": "Ella Phillips",
+      "category": "General",
+      "date": "2024-10-22T10:56:41.396Z",
+      "amount": -115.17,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "General",
+      "amount": -117.79,
+      "recurring": true,
+      "date": "2024-10-16T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Entertainment",
+      "amount": -65.03,
+      "recurring": true,
+      "date": "2024-10-16T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "General",
+      "date": "2024-10-15T17:57:35.729Z",
+      "amount": -72.63,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "name": "Spark Electric Solutions",
+      "category": "General",
+      "date": "2024-10-15T12:28:47.920Z",
+      "amount": 187.26,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/lily-ramirez.jpg",
+      "name": "Lily Ramirez",
+      "category": "Dining Out",
+      "date": "2024-10-13T06:43:54.185Z",
+      "amount": -25.69,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Dining Out",
+      "date": "2024-10-11T17:26:08.048Z",
+      "amount": -56.86,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "General",
+      "date": "2024-10-11T11:37:45.920Z",
+      "amount": -37.72,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/liam-hughes.jpg",
+      "name": "Liam Hughes",
+      "category": "Healthcare",
+      "date": "2024-10-09T20:54:37.112Z",
+      "amount": -324.88,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/mason-martinez.jpg",
+      "name": "Mason Martinez",
+      "category": "Bills",
+      "date": "2024-10-08T23:19:29.312Z",
+      "amount": -239.79,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Urban Services Hub",
+      "category": "Entertainment",
+      "date": "2024-10-05T20:53:06.255Z",
+      "amount": -98.31,
+      "recurring": false
+    },
+    {
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "name": "Pixel Playground",
+      "category": "Dining Out",
+      "date": "2024-10-02T11:55:11.390Z",
+      "amount": -27.01,
+      "recurring": false
+    }
+  ],
+  "budgets": [
+    {
+      "category": "Bills",
+      "maximum": 1200,
+      "spent": 980.45,
+      "period": "monthly",
+      "theme": "blue"
+    },
+    {
+      "category": "Groceries",
+      "maximum": 600,
+      "spent": 423.12,
+      "period": "monthly",
+      "theme": "green"
+    },
+    {
+      "category": "Entertainment",
+      "maximum": 200,
+      "spent": 156.89,
+      "period": "monthly",
+      "theme": "purple"
+    },
+    {
+      "category": "Transportation",
+      "maximum": 150,
+      "spent": 98.5,
+      "period": "monthly",
+      "theme": "yellow"
+    },
+    {
+      "category": "Healthcare",
+      "maximum": 300,
+      "spent": 158.49,
+      "period": "monthly",
+      "theme": "red"
+    },
+    {
+      "category": "Shopping",
+      "maximum": 400,
+      "spent": 285.75,
+      "period": "monthly",
+      "theme": "pink"
+    },
+    {
+      "category": "Dining Out",
+      "maximum": 300,
+      "spent": 245.32,
+      "period": "monthly",
+      "theme": "orange"
+    },
+    {
+      "category": "General",
+      "maximum": 500,
+      "spent": 324.18,
+      "period": "monthly",
+      "theme": "gray"
+    }
+  ],
+  "pots": [
+    {
+      "name": "Emergency Fund",
+      "target": 10000,
+      "total": 6500.75,
+      "theme": "blue",
+      "description": "3-6 months of living expenses"
+    },
+    {
+      "name": "New Car",
+      "target": 25000,
+      "total": 12750.25,
+      "theme": "green",
+      "description": "Saving for a new electric vehicle"
+    },
+    {
+      "name": "Vacation",
+      "target": 5000,
+      "total": 3250.5,
+      "theme": "purple",
+      "description": "Summer vacation fund"
+    },
+    {
+      "name": "Home Down Payment",
+      "target": 50000,
+      "total": 15750.8,
+      "theme": "orange",
+      "description": "20% down payment for a house"
+    },
+    {
+      "name": "Tech Gadgets",
+      "target": 2000,
+      "total": 750.25,
+      "theme": "pink",
+      "description": "New laptop and accessories"
+    }
+  ]
+}

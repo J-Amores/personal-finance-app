@@ -1,22 +1,23 @@
-'use client'
+'use client';
 
-import { Input } from '@/components/ui/input'
-import { Search } from 'lucide-react'
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 
 interface TransactionSearchProps {
-  onSearch: (query: string) => void;
-  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
 }
 
-export function TransactionSearch({ onSearch, placeholder = 'Search transactions...' }: TransactionSearchProps) {
+export function TransactionSearch({ value, onChange }: TransactionSearchProps) {
   return (
     <div className="relative">
       <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
-        placeholder={placeholder}
+        placeholder="Search transactions..."
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         className="pl-8"
-        onChange={(e) => onSearch(e.target.value)}
       />
     </div>
-  )
+  );
 }

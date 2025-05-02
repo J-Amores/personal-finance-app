@@ -1,18 +1,108 @@
 {
   "transactions": [
     {
+      "name": "Monthly Salary",
+      "category": "Income",
+      "amount": 2800.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2025-05-01T04:00:00.000Z"
+    },
+    {
+      "name": "Freelance Project - Web Development",
+      "category": "Income",
+      "amount": 800.00,
+      "type": "income",
+      "recurring": false,
+      "date": "2025-05-15T04:00:00.000Z"
+    },
+    {
+      "name": "Investment Dividends",
+      "category": "Income",
+      "amount": 150.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2025-05-10T04:00:00.000Z"
+    },
+    {
+      "name": "Monthly Salary",
+      "category": "Income",
+      "amount": 2800.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2025-04-01T04:00:00.000Z"
+    },
+    {
+      "name": "Side Gig Payment",
+      "category": "Income",
+      "amount": 400.00,
+      "type": "income",
+      "recurring": false,
+      "date": "2025-04-20T04:00:00.000Z"
+    },
+    {
+      "name": "Investment Dividends",
+      "category": "Income",
+      "amount": 150.00,
+      "recurring": true,
+      "date": "2025-04-10T04:00:00.000Z"
+    },
+    {
+      "name": "Monthly Salary",
+      "category": "Income",
+      "amount": 2800.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2025-03-01T04:00:00.000Z"
+    },
+    {
+      "name": "Freelance Project - UI Design",
+      "category": "Income",
+      "amount": 600.00,
+      "type": "income",
+      "recurring": false,
+      "date": "2025-03-15T04:00:00.000Z"
+    },
+    {
+      "name": "Investment Dividends",
+      "category": "Income",
+      "amount": 150.00,
+      "recurring": true,
+      "date": "2025-03-10T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Annual Insurance Premium",
+      "category": "Insurance",
+      "amount": -925.00,
+      "type": "expense",
+      "recurring": false,
+      "date": "2025-04-28T04:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Spring Home Maintenance",
+      "category": "Home",
+      "amount": -475.50,
+      "type": "expense",
+      "recurring": false,
+      "date": "2025-04-26T04:00:00.000Z"
+    },
+    {
       "avatar": "./assets/images/avatars/urban-services-hub.jpg",
       "name": "Urban Services Hub",
       "category": "General",
       "amount": -117.79,
+      "type": "expense",
       "recurring": true,
-      "date": "2025-05-24T04:00:00.000Z"
+      "date": "2025-04-25T04:00:00.000Z"
     },
     {
       "avatar": "./assets/images/avatars/pixel-playground.jpg",
       "name": "Pixel Playground",
       "category": "Entertainment",
       "amount": -65.03,
+      "type": "expense",
       "recurring": true,
       "date": "2025-05-13T04:00:00.000Z"
     },
@@ -21,6 +111,7 @@
       "name": "Savory Bites Bistro",
       "category": "Dining Out",
       "amount": -77.36,
+      "type": "expense",
       "recurring": true,
       "date": "2025-05-06T04:00:00.000Z"
     },
@@ -29,6 +120,7 @@
       "name": "Spark Electric Solutions",
       "category": "Bills",
       "amount": -254.11,
+      "type": "expense",
       "recurring": true,
       "date": "2025-05-06T04:00:00.000Z"
     },
@@ -77,6 +169,7 @@
       "name": "Pixel Playground",
       "category": "Entertainment",
       "amount": -65.03,
+      "type": "expense",
       "recurring": true,
       "date": "2025-04-25T04:00:00.000Z"
     },
@@ -109,6 +202,7 @@
       "name": "Savory Bites Bistro",
       "category": "Dining Out",
       "amount": -77.36,
+      "type": "expense",
       "recurring": true,
       "date": "2025-04-21T04:00:00.000Z"
     },
@@ -181,6 +275,7 @@
       "name": "Urban Services Hub",
       "category": "General",
       "amount": -117.79,
+      "type": "expense",
       "recurring": true,
       "date": "2025-04-11T04:00:00.000Z"
     },
@@ -253,6 +348,7 @@
       "name": "Spark Electric Solutions",
       "category": "Bills",
       "amount": -254.11,
+      "type": "expense",
       "recurring": true,
       "date": "2025-04-01T04:00:00.000Z"
     },
@@ -325,6 +421,7 @@
       "name": "Urban Services Hub",
       "category": "General",
       "amount": -117.79,
+      "type": "expense",
       "recurring": true,
       "date": "2025-03-17T04:00:00.000Z"
     },
@@ -333,6 +430,7 @@
       "name": "Spark Electric Solutions",
       "category": "Bills",
       "amount": -254.11,
+      "type": "expense",
       "recurring": true,
       "date": "2025-03-17T04:00:00.000Z"
     },
@@ -373,6 +471,7 @@
       "name": "Savory Bites Bistro",
       "category": "Dining Out",
       "amount": -77.36,
+      "type": "expense",
       "recurring": true,
       "date": "2025-03-13T04:00:00.000Z"
     },
@@ -413,6 +512,7 @@
       "name": "Pixel Playground",
       "category": "Entertainment",
       "amount": -65.03,
+      "type": "expense",
       "recurring": true,
       "date": "2025-03-07T05:00:00.000Z"
     },
@@ -453,6 +553,7 @@
       "name": "Spark Electric Solutions",
       "category": "Bills",
       "amount": -254.11,
+      "type": "expense",
       "recurring": true,
       "date": "2025-02-23T05:00:00.000Z"
     },
@@ -525,14 +626,32 @@
       "name": "Pixel Playground",
       "category": "Entertainment",
       "amount": -65.03,
+      "type": "expense",
       "recurring": true,
       "date": "2025-02-09T05:00:00.000Z"
+    },
+    {
+      "name": "Monthly Salary",
+      "category": "Income",
+      "amount": 2800.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2025-02-01T05:00:00.000Z"
+    },
+    {
+      "name": "Investment Dividends",
+      "category": "Income",
+      "amount": 150.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2025-02-10T05:00:00.000Z"
     },
     {
       "avatar": "./assets/images/avatars/urban-services-hub.jpg",
       "name": "Urban Services Hub",
       "category": "General",
       "amount": -117.79,
+      "type": "expense",
       "recurring": true,
       "date": "2025-02-08T05:00:00.000Z"
     },
@@ -557,6 +676,7 @@
       "name": "Savory Bites Bistro",
       "category": "Dining Out",
       "amount": -77.36,
+      "type": "expense",
       "recurring": true,
       "date": "2025-02-06T05:00:00.000Z"
     },
@@ -673,10 +793,27 @@
       "recurring": false
     },
     {
+      "name": "Monthly Salary",
+      "category": "Income",
+      "amount": 2800.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2025-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Investment Dividends",
+      "category": "Income",
+      "amount": 150.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2025-01-10T05:00:00.000Z"
+    },
+    {
       "avatar": "./assets/images/avatars/urban-services-hub.jpg",
       "name": "Urban Services Hub",
       "category": "General",
       "amount": -117.79,
+      "type": "expense",
       "recurring": true,
       "date": "2025-01-16T05:00:00.000Z"
     },
@@ -725,6 +862,7 @@
       "name": "Spark Electric Solutions",
       "category": "Bills",
       "amount": -254.11,
+      "type": "expense",
       "recurring": true,
       "date": "2025-01-12T05:00:00.000Z"
     },
@@ -741,6 +879,7 @@
       "name": "Savory Bites Bistro",
       "category": "Dining Out",
       "amount": -77.36,
+      "type": "expense",
       "recurring": true,
       "date": "2025-01-11T05:00:00.000Z"
     },
@@ -749,6 +888,7 @@
       "name": "Pixel Playground",
       "category": "Entertainment",
       "amount": -65.03,
+      "type": "expense",
       "recurring": true,
       "date": "2025-01-10T05:00:00.000Z"
     },
@@ -885,6 +1025,7 @@
       "name": "Pixel Playground",
       "category": "Entertainment",
       "amount": -65.03,
+      "type": "expense",
       "recurring": true,
       "date": "2024-12-14T05:00:00.000Z"
     },
@@ -901,6 +1042,7 @@
       "name": "Spark Electric Solutions",
       "category": "Bills",
       "amount": -254.11,
+      "type": "expense",
       "recurring": true,
       "date": "2024-12-13T05:00:00.000Z"
     },
@@ -917,6 +1059,7 @@
       "name": "Savory Bites Bistro",
       "category": "Dining Out",
       "amount": -77.36,
+      "type": "expense",
       "recurring": true,
       "date": "2024-12-11T05:00:00.000Z"
     },
@@ -937,10 +1080,45 @@
       "recurring": false
     },
     {
+      "name": "Monthly Salary",
+      "category": "Income",
+      "amount": 2800.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2024-12-01T05:00:00.000Z"
+    },
+    {
+      "name": "Investment Dividends",
+      "category": "Income",
+      "amount": 150.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2024-12-10T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Holiday Gift Shopping",
+      "category": "Shopping",
+      "amount": -750.00,
+      "type": "expense",
+      "recurring": false,
+      "date": "2024-12-15T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Holiday Party Expenses",
+      "category": "Entertainment",
+      "amount": -385.25,
+      "type": "expense",
+      "recurring": false,
+      "date": "2024-12-12T05:00:00.000Z"
+    },
+    {
       "avatar": "./assets/images/avatars/urban-services-hub.jpg",
       "name": "Urban Services Hub",
       "category": "General",
       "amount": -117.79,
+      "type": "expense",
       "recurring": true,
       "date": "2024-12-08T05:00:00.000Z"
     },
@@ -1109,6 +1287,7 @@
       "name": "Pixel Playground",
       "category": "Entertainment",
       "amount": -65.03,
+      "type": "expense",
       "recurring": true,
       "date": "2024-11-19T05:00:00.000Z"
     },
@@ -1117,6 +1296,7 @@
       "name": "Spark Electric Solutions",
       "category": "Bills",
       "amount": -254.11,
+      "type": "expense",
       "recurring": true,
       "date": "2024-11-19T05:00:00.000Z"
     },
@@ -1161,10 +1341,45 @@
       "recurring": false
     },
     {
+      "name": "Monthly Salary",
+      "category": "Income",
+      "amount": 2800.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2024-11-01T05:00:00.000Z"
+    },
+    {
+      "name": "Investment Dividends",
+      "category": "Income",
+      "amount": 150.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2024-11-10T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Car Repair - Engine Service",
+      "category": "Auto & Transport",
+      "amount": -850.00,
+      "type": "expense",
+      "recurring": false,
+      "date": "2024-11-15T05:00:00.000Z"
+    },
+    {
+      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
+      "name": "Winter Clothing Shopping",
+      "category": "Shopping",
+      "amount": -425.50,
+      "type": "expense",
+      "recurring": false,
+      "date": "2024-11-12T05:00:00.000Z"
+    },
+    {
       "avatar": "./assets/images/avatars/urban-services-hub.jpg",
       "name": "Urban Services Hub",
       "category": "General",
       "amount": -117.79,
+      "type": "expense",
       "recurring": true,
       "date": "2024-11-10T05:00:00.000Z"
     },
@@ -1197,6 +1412,7 @@
       "name": "Savory Bites Bistro",
       "category": "Dining Out",
       "amount": -77.36,
+      "type": "expense",
       "recurring": true,
       "date": "2024-11-05T05:00:00.000Z"
     },
@@ -1301,6 +1517,7 @@
       "name": "Savory Bites Bistro",
       "category": "Dining Out",
       "amount": -77.36,
+      "type": "expense",
       "recurring": true,
       "date": "2024-10-25T04:00:00.000Z"
     },
@@ -1317,6 +1534,7 @@
       "name": "Spark Electric Solutions",
       "category": "Bills",
       "amount": -254.11,
+      "type": "expense",
       "recurring": true,
       "date": "2024-10-23T04:00:00.000Z"
     },
@@ -1329,10 +1547,27 @@
       "recurring": false
     },
     {
+      "name": "Monthly Salary",
+      "category": "Income",
+      "amount": 2800.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2024-10-01T04:00:00.000Z"
+    },
+    {
+      "name": "Investment Dividends",
+      "category": "Income",
+      "amount": 150.00,
+      "type": "income",
+      "recurring": true,
+      "date": "2024-10-10T04:00:00.000Z"
+    },
+    {
       "avatar": "./assets/images/avatars/urban-services-hub.jpg",
       "name": "Urban Services Hub",
       "category": "General",
       "amount": -117.79,
+      "type": "expense",
       "recurring": true,
       "date": "2024-10-16T04:00:00.000Z"
     },
@@ -1341,6 +1576,7 @@
       "name": "Pixel Playground",
       "category": "Entertainment",
       "amount": -65.03,
+      "type": "expense",
       "recurring": true,
       "date": "2024-10-16T04:00:00.000Z"
     },

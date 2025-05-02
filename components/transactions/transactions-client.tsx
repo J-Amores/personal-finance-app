@@ -7,6 +7,7 @@ import { TransactionList } from '@/components/transactions/transaction-list';
 import { TransactionSearch } from '@/components/transactions/transaction-search';
 import { TransactionFilters } from '@/components/transactions/transaction-filters';
 import { TransactionDialog } from '@/components/transactions/transaction-dialog';
+import SpendingTrendsChart from '@/components/transactions/spending-trends-chart';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { createTransaction, updateTransaction, deleteTransaction, getTransactions } from '@/app/actions/transactions';
@@ -176,24 +177,26 @@ export function TransactionsClient({ initialTransactions }: TransactionsClientPr
           </div>
         )}
 
-
-        <TransactionList
-          transactions={transactions}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onSortChange={(column, order) => {
-            setSortColumn(column);
-            setSortOrder(order);
-          }}
-          onFilterChange={(column, value) => {
-            setFilters(prev => ({
-              ...prev,
-              [column]: value
-            }));
-          }}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-        />
+        <div className="space-y-6">
+          <SpendingTrendsChart transactions={transactions} />
+          <TransactionList
+            transactions={transactions}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onSortChange={(column, order) => {
+              setSortColumn(column);
+              setSortOrder(order);
+            }}
+            onFilterChange={(column, value) => {
+              setFilters(prev => ({
+                ...prev,
+                [column]: value
+              }));
+            }}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
+        </div>
       </div>
 
       <TransactionDialog

@@ -30,7 +30,7 @@ async function main() {
         category: transaction.category,
         date: new Date(transaction.date),
         description: transaction.name,
-        type: transaction.amount > 0 ? 'income' : 'expense'
+        type: transaction.type || (transaction.amount > 0 ? 'income' : 'expense')
       }
     })
   }

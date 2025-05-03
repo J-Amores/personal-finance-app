@@ -3,10 +3,10 @@ export interface Bill {
   name: string;
   amount: number;
   dueDate: string;
-  status: 'paid' | 'pending' | 'overdue';
   category: string;
-  recurring?: boolean;
-  frequency?: 'monthly' | 'yearly' | 'weekly';
+  isPaid: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type BillSortOrder = 'dueDate' | 'amount' | 'status';
+export type BillSortOrder = 'asc' | 'desc';

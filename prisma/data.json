@@ -1653,6 +1653,50 @@
       "recurring": false
     }
   ],
+  "bills": [
+    {
+      "name": "Rent",
+      "amount": 1200.00,
+      "dueDate": "2025-05-01T00:00:00.000Z",
+      "category": "Rent/Mortgage",
+      "isPaid": false
+    },
+    {
+      "name": "Electricity",
+      "amount": 150.00,
+      "dueDate": "2025-05-15T00:00:00.000Z",
+      "category": "Utilities",
+      "isPaid": false
+    },
+    {
+      "name": "Internet",
+      "amount": 75.00,
+      "dueDate": "2025-05-10T00:00:00.000Z",
+      "category": "Phone/Internet",
+      "isPaid": false
+    },
+    {
+      "name": "Car Insurance",
+      "amount": 120.00,
+      "dueDate": "2025-05-05T00:00:00.000Z",
+      "category": "Insurance",
+      "isPaid": true
+    },
+    {
+      "name": "Netflix",
+      "amount": 15.99,
+      "dueDate": "2025-05-20T00:00:00.000Z",
+      "category": "Subscriptions",
+      "isPaid": false
+    },
+    {
+      "name": "Gym Membership",
+      "amount": 49.99,
+      "dueDate": "2025-05-01T00:00:00.000Z",
+      "category": "Subscriptions",
+      "isPaid": true
+    }
+  ],
   "budgets": [
     {
       "category": "Bills",

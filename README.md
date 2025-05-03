@@ -50,7 +50,7 @@ personal-finance-app/
 ├── app/                    # Next.js app directory
 │   ├── budgets/           # Budgets page
 │   ├── pots/             # Savings pots page
-│   ├── recurring-bills/  # Recurring bills page
+│   ├── bills/           # Bills management page
 │   └── transactions/     # Transactions page
 ├── components/            # React components
 │   ├── ui/              # shadcn/ui components

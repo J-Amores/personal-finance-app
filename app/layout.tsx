@@ -29,8 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/transactions" className="p-3 hover:bg-zinc-800 rounded-md">
                 <ArrowUpDown size={20} className="text-gray-400" />
               </Link>
-              <Link href="/recurring-bills" className="p-3 hover:bg-zinc-800 rounded-md">
-                <RefreshCw size={20} className="text-gray-400" />
+              <Link href="/bills" className="p-3 hover:bg-zinc-800 rounded-md">
+                Bills
               </Link>
               <Link href="/pots" className="p-3 hover:bg-zinc-800 rounded-md">
                 <Wallet size={20} className="text-gray-400" />

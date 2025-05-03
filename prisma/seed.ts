@@ -13,6 +13,7 @@ async function main() {
   await prisma.transaction.deleteMany()
   await prisma.budget.deleteMany()
   await prisma.pot.deleteMany()
+  await prisma.bill.deleteMany()
 
   // Read data from data.json
   const data = JSON.parse(
@@ -60,10 +61,24 @@ async function main() {
     })
   }
 
+  // Create bills
+  for (const bill of data.bills) {
+    await prisma.bill.create({
+      data: {
+        name: bill.name,
+        amount: bill.amount,
+        dueDate: new Date(bill.dueDate),
+        category: bill.category,
+        isPaid: bill.isPaid
+      }
+    })
+  }
+
   console.log('Database has been seeded with:')
   console.log(`- ${data.transactions.length} transactions`)
   console.log(`- ${data.budgets.length} budgets`)
   console.log(`- ${data.pots.length} savings pots`)
+  console.log(`- ${data.bills.length} bills`)
 }
 
 main()

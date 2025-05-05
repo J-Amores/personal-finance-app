@@ -1,7 +1,9 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Transaction } from '@/types/transaction';
+import { transactionSchema, type TransactionFormValues } from '@/lib/validations/transaction';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -30,7 +32,7 @@ import { format } from 'date-fns';
 
 interface TransactionFormProps {
   transaction?: Transaction;
-  onSubmit: (data: Partial<Transaction>) => Promise<void>;
+  onSubmit: (data: TransactionFormValues) => Promise<void>;
   onCancel: () => void;
   categories: string[];
 }
@@ -41,13 +43,15 @@ export function TransactionForm({
   onCancel,
   categories,
 }: TransactionFormProps) {
-  const form = useForm<Partial<Transaction>>({
+  const form = useForm<TransactionFormValues>({
+    resolver: zodResolver(transactionSchema),
     defaultValues: {
       description: transaction?.description || '',
       category: transaction?.category || '',
       amount: transaction?.amount || 0,
       type: transaction?.type || 'expense',
       date: transaction?.date || new Date(),
+      notes: transaction?.notes || '',
     },
   });
 

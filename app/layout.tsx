@@ -3,6 +3,7 @@ import { DollarSign, Home, ArrowUpDown, RefreshCw, Wallet, BarChart3 } from "luc
 import Link from "next/link"
 import "./globals.css"
 import { Inter } from "next/font/google"
+import { QueryProvider } from "@/providers/query-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -16,8 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex h-screen bg-gray-50">
-          {/* Sidebar */}
+        <QueryProvider>
+          <div className="flex h-screen bg-gray-50">
+            {/* Sidebar */}
           <div className="w-16 bg-zinc-900 flex flex-col items-center py-6 space-y-8">
             <div className="text-white">
               <DollarSign size={24} />
@@ -41,9 +43,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
 
-          {/* Main Content */}
-          <div className="flex-1 overflow-auto">{children}</div>
-        </div>
+            {/* Main Content */}
+            <div className="flex-1 overflow-auto">{children}</div>
+          </div>
+        </QueryProvider>
       </body>
     </html>
   )

@@ -1,31 +1,45 @@
 'use server'
 
-import { prisma } from '@/lib/db'
+import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { Budget } from '@/types/budget'
+import { Prisma } from '@prisma/client'
 
-type BudgetCreateInput = {
-  category: string
-  amount: number
-  period: 'monthly' | 'yearly'
-  color: string
+type AlertsType = {
+  enabled: boolean
+  threshold?: number
 }
 
-type BudgetUpdateInput = Partial<BudgetCreateInput>
+type BudgetBaseInput = {
+  name: string
+  category: string
+  amount: number
+  spent?: number
+  period: 'monthly' | 'yearly' | 'quarterly'
+  startDate: string
+  endDate?: string
+  notes?: string
+  isRecurring?: boolean
+  alerts: AlertsType
+}
+
+type BudgetCreateInput = BudgetBaseInput
+
+type BudgetUpdateInput = Partial<BudgetBaseInput>
 
 export async function getBudgets() {
   try {
-    const budgets = await prisma.budget.findMany()
+    const budgets = await db.budget.findMany()
     
     // Calculate spent amounts for each budget
     const budgetsWithSpent = await Promise.all(
-      budgets.map(async (budget) => {
+      budgets.map(async (budget: any) => {
         const spent = await calculateBudgetSpent(budget.category)
         return {
           ...budget,
           spent,
-          period: budget.period as 'monthly' | 'yearly',
-          color: budget.theme,
+          period: budget.period as 'monthly' | 'yearly' | 'quarterly',
+          alerts: JSON.parse(budget.alerts)
         }
       })
     )
@@ -39,17 +53,18 @@ export async function getBudgets() {
 
 export async function calculateBudgetSpent(category: string) {
   try {
-    const result = await prisma.transaction.aggregate({
+    const transactions = await db.transaction.findMany({
       where: {
         category,
         amount: { lt: 0 }, // Only count negative amounts (expenses)
       },
-      _sum: {
-        amount: true,
-      },
+      select: {
+        amount: true
+      }
     })
-    
-    return Math.abs(result._sum.amount || 0)
+
+    const total = transactions.reduce((sum: number, t: { amount: number }) => sum + t.amount, 0)
+    return Math.abs(total)
   } catch (error) {
     console.error('Error calculating budget spent:', error)
     return 0
@@ -58,13 +73,18 @@ export async function calculateBudgetSpent(category: string) {
 
 export async function createBudget(data: BudgetCreateInput) {
   try {
-    const budget = await prisma.budget.create({
+    const budget = await db.budget.create({
       data: {
+        name: data.name,
         category: data.category,
         amount: data.amount,
         period: data.period,
-        theme: data.color,
-        spent: 0,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        notes: data.notes,
+        isRecurring: data.isRecurring,
+        alerts: JSON.stringify(data.alerts),
+        spent: 0
       },
     })
 
@@ -78,13 +98,18 @@ export async function createBudget(data: BudgetCreateInput) {
 
 export async function updateBudget(id: string, data: BudgetUpdateInput) {
   try {
-    const budget = await prisma.budget.update({
+    const budget = await db.budget.update({
       where: { id },
       data: {
-        category: data.category,
-        amount: data.amount,
-        period: data.period,
-        theme: data.color,
+        ...(data.name && { name: data.name }),
+        ...(data.category && { category: data.category }),
+        ...(data.amount && { amount: data.amount }),
+        ...(data.period && { period: data.period }),
+        ...(data.startDate && { startDate: data.startDate }),
+        ...(data.endDate && { endDate: data.endDate }),
+        ...(data.notes !== undefined && { notes: data.notes }),
+        ...(data.isRecurring !== undefined && { isRecurring: data.isRecurring }),
+        ...(data.alerts && { alerts: JSON.stringify(data.alerts) })
       },
     })
 
@@ -98,7 +123,7 @@ export async function updateBudget(id: string, data: BudgetUpdateInput) {
 
 export async function deleteBudget(id: string) {
   try {
-    await prisma.budget.delete({
+    await db.budget.delete({
       where: { id },
     })
 
@@ -113,12 +138,12 @@ export async function deleteBudget(id: string) {
 // Update all budgets' spent amounts
 export async function updateBudgetSpending() {
   try {
-    const budgets = await prisma.budget.findMany()
+    const budgets = await db.budget.findMany()
     
     await Promise.all(
-      budgets.map(async (budget) => {
+      budgets.map(async (budget: any) => {
         const spent = await calculateBudgetSpent(budget.category)
-        await prisma.budget.update({
+        await db.budget.update({
           where: { id: budget.id },
           data: { spent },
         })

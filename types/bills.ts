@@ -4,7 +4,10 @@ export interface Bill {
   amount: number;
   dueDate: string;
   category: string;
-  isPaid: boolean;
+  frequency: 'monthly' | 'weekly' | 'yearly' | 'once';
+  status: 'paid' | 'pending' | 'overdue';
+  notes?: string;
+  automaticPayment: boolean;
   createdAt: string;
   updatedAt: string;
 }

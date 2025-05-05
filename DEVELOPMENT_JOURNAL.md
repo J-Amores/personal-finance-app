@@ -1,6 +1,6 @@
 # Development Journal - Personal Finance Application
 
-Last Updated: May 1, 2025 9:28 PM EDT
+Last Updated: May 5, 2025 3:02 PM EDT
 
 ## Current Status
 
@@ -31,6 +31,8 @@ Last Updated: May 1, 2025 9:28 PM EDT
 - TypeScript
 - Tailwind CSS
 - shadcn/ui with Radix UI
+- TanStack Query for data fetching
+- React Hook Form with Zod validation
 - Prisma ORM with SQLite
 - Recharts for data visualization
 
@@ -53,6 +55,15 @@ Last Updated: May 1, 2025 9:28 PM EDT
 - Accessibility improvements
 
 ## Change Log
+
+### [2025-05-05 3:02 PM EDT]
+- Major technical improvements:
+  - Migrated from Server Actions to TanStack Query
+  - Implemented React Hook Form with Zod validation
+  - Added query invalidation and caching
+  - Enhanced error handling and loading states
+  - Updated component naming to follow Airbnb Style Guide
+  - Implemented proper type safety throughout forms
 
 ### [2025-05-01 9:28 PM EDT]
 - Enhanced spending trends chart:

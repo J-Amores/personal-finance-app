@@ -1,6 +1,8 @@
 'use client';
 
 import { Transaction } from '@/types/transaction';
+import { type TransactionFormValues } from '@/lib/validations/transaction';
+import { useCreateTransaction, useUpdateTransaction } from '@/hooks/use-transactions';
 import {
   Dialog,
   DialogContent,
@@ -13,7 +15,6 @@ interface TransactionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   transaction?: Transaction;
-  onSubmit: (data: Partial<Transaction>) => Promise<void>;
   categories: string[];
 }
 
@@ -21,9 +22,10 @@ export function TransactionDialog({
   open,
   onOpenChange,
   transaction,
-  onSubmit,
   categories,
 }: TransactionDialogProps) {
+  const createTransaction = useCreateTransaction();
+  const updateTransaction = useUpdateTransaction();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
@@ -34,7 +36,14 @@ export function TransactionDialog({
         </DialogHeader>
         <TransactionForm
           transaction={transaction}
-          onSubmit={onSubmit}
+          onSubmit={async (data: TransactionFormValues) => {
+            if (transaction) {
+              await updateTransaction.mutateAsync({ id: transaction.id, data });
+            } else {
+              await createTransaction.mutateAsync(data);
+            }
+            onOpenChange(false);
+          }}
           onCancel={() => onOpenChange(false)}
           categories={categories}
         />

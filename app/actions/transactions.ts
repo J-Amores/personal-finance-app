@@ -1,6 +1,6 @@
 'use server'
 
-import { prisma } from '@/lib/db'
+import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { Transaction } from '@/types/transaction'
 import { updateBudgetSpending } from './budgets'
@@ -30,7 +30,7 @@ export async function getTransactions(filters: TransactionFilters = {}) {
       date: filters.sortOrder,
     }
 
-    const transactions = await prisma.transaction.findMany({
+    const transactions = await db.transaction.findMany({
       where,
       orderBy: Object.fromEntries(
         Object.entries(orderBy).filter(([_, value]) => value !== undefined)
@@ -38,7 +38,7 @@ export async function getTransactions(filters: TransactionFilters = {}) {
     })
 
     // Convert the raw database records to our Transaction type
-    const typedTransactions: Transaction[] = transactions.map(t => ({
+    const typedTransactions: Transaction[] = transactions.map((t: any) => ({
       ...t,
       type: t.type as 'income' | 'expense', // Ensure type is correct
     }))
@@ -52,7 +52,7 @@ export async function getTransactions(filters: TransactionFilters = {}) {
 
 export async function createTransaction(data: TransactionInput) {
   try {
-    const transaction = await prisma.transaction.create({
+    const transaction = await db.transaction.create({
       data: {
         ...data,
         // Ensure date is a proper Date object
@@ -77,7 +77,7 @@ export async function createTransaction(data: TransactionInput) {
 
 export async function updateTransaction(id: string, data: TransactionInput) {
   try {
-    const transaction = await prisma.transaction.update({
+    const transaction = await db.transaction.update({
       where: { id },
       data: {
         ...data,
@@ -99,11 +99,11 @@ export async function updateTransaction(id: string, data: TransactionInput) {
 
 export async function deleteTransaction(id: string) {
   try {
-    const transaction = await prisma.transaction.findUnique({
+    const transaction: Transaction | null = await db.transaction.findUnique({
       where: { id },
     })
 
-    await prisma.transaction.delete({
+    await db.transaction.delete({
       where: { id },
     })
 

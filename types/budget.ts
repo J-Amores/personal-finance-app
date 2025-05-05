@@ -1,12 +1,20 @@
 export interface Budget {
   id: string;
+  name: string;
   category: string;
   amount: number;
   spent: number;
-  period: 'monthly' | 'yearly';
-  color?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  period: 'monthly' | 'yearly' | 'quarterly';
+  startDate: string;
+  endDate?: string;
+  notes?: string;
+  isRecurring: boolean;
+  alerts: {
+    enabled: boolean;
+    threshold?: number;
+  };
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface BudgetProgress {

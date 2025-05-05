@@ -5,6 +5,7 @@ export interface Transaction {
   date: Date;
   amount: number;
   type: 'income' | 'expense';
+  notes?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

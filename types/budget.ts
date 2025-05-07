@@ -1,13 +1,15 @@
+export type Period = 'monthly' | 'quarterly' | 'yearly';
+
 export interface Budget {
   id: string;
   name: string;
   category: string;
   amount: number;
   spent: number;
-  period: 'monthly' | 'yearly' | 'quarterly';
+  period: Period;
   startDate: string;
-  endDate?: string;
-  notes?: string;
+  endDate: string | undefined;
+  notes: string | undefined;
   isRecurring: boolean;
   alerts: {
     enabled: boolean;

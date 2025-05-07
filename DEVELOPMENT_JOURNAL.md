@@ -16,6 +16,7 @@ Last Updated: May 5, 2025 3:02 PM EDT
 - Complete bills management system with CRUD operations
 
 ### 🚧 In Progress:
+- Modernizing budgets implementation
 - Loading state improvements
 - Pagination implementation
 - Transaction list refinements

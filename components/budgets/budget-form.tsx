@@ -1,10 +1,11 @@
 'use client';
 
-import { Budget } from '@/types/budget';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -13,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -22,8 +24,9 @@ import {
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 import { format } from 'date-fns';
-import { budgetSchema, type BudgetFormValues } from '@/lib/validations/budget';
+import { Budget, type Period } from '@/types/budget';
 
 const budgetCategories = [
   'Housing',
@@ -41,36 +44,68 @@ const budgetPeriods = [
   'monthly',
   'quarterly',
   'yearly',
-];
+] as const;
+
+const budgetSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  amount: z.number().min(0.01, 'Amount must be greater than 0'),
+  category: z.string().min(1, 'Category is required'),
+  period: z.enum(budgetPeriods),
+  startDate: z.date(),
+  endDate: z.date().optional(),
+  notes: z.string().optional(),
+  isRecurring: z.boolean(),
+  alerts: z.object({
+    enabled: z.boolean(),
+    threshold: z.number().optional(),
+  }),
+});
+
+type BudgetFormData = z.infer<typeof budgetSchema>;
 
 interface BudgetFormProps {
-  onSubmit: (data: BudgetFormValues) => Promise<void>;
-  initialData?: Budget;
+  onSubmit: (data: BudgetFormData) => Promise<void>;
   onCancel: () => void;
+  budget?: Budget | null;
+  isSubmitting: boolean;
 }
 
-export function BudgetForm({ onSubmit, initialData, onCancel }: BudgetFormProps) {
-  const form = useForm<BudgetFormValues>({
+export function BudgetForm({ onSubmit, onCancel, budget, isSubmitting }: BudgetFormProps) {
+  const form = useForm<BudgetFormData>({
     resolver: zodResolver(budgetSchema),
-    defaultValues: {
-      name: initialData?.name || '',
-      amount: initialData?.amount || 0,
-      category: initialData?.category || '',
-      period: initialData?.period || 'monthly',
-      startDate: initialData?.startDate ? new Date(initialData.startDate) : new Date(),
-      endDate: initialData?.endDate ? new Date(initialData.endDate) : undefined,
-      notes: initialData?.notes || '',
-      isRecurring: initialData?.isRecurring ?? true,
-      alerts: {
-        enabled: initialData?.alerts.enabled ?? false,
-        threshold: initialData?.alerts.threshold,
-      },
-    },
+    defaultValues: budget
+      ? {
+          name: budget.name,
+          category: budget.category,
+          amount: budget.amount,
+          period: budget.period,
+          startDate: new Date(budget.startDate),
+          endDate: budget.endDate ? new Date(budget.endDate) : undefined,
+          notes: budget.notes,
+          isRecurring: budget.isRecurring,
+          alerts: budget.alerts,
+        }
+      : {
+          name: '',
+          category: '',
+          amount: 0,
+          period: 'monthly',
+          startDate: new Date(),
+          isRecurring: false,
+          alerts: {
+            enabled: false,
+          },
+        },
   });
+
+  const handleSubmit = async (values: BudgetFormData) => {
+    await onSubmit(values);
+    form.reset();
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8" aria-disabled={isSubmitting}>
         <FormField
           control={form.control}
           name="name"
@@ -255,9 +290,9 @@ export function BudgetForm({ onSubmit, initialData, onCancel }: BudgetFormProps)
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>Enable Alerts</FormLabel>
-                <p className="text-sm text-muted-foreground">
-                  Get notified when spending approaches budget limit
-                </p>
+                <FormDescription>
+                  Get notified when you exceed your budget
+                </FormDescription>
               </div>
             </FormItem>
           )}
@@ -286,12 +321,16 @@ export function BudgetForm({ onSubmit, initialData, onCancel }: BudgetFormProps)
           />
         )}
 
-        <div className="flex justify-end space-x-2">
-          <Button type="button" variant="outline" onClick={onCancel}>
+        <div className="flex justify-end space-x-4 mt-6">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+          >
             Cancel
           </Button>
-          <Button type="submit">
-            {initialData ? 'Update Budget' : 'Add Budget'}
+          <Button type="submit" disabled={isSubmitting}>
+            {budget ? 'Update' : 'Create'} Budget
           </Button>
         </div>
       </form>

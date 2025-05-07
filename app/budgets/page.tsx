@@ -1,129 +1,267 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
-import { BudgetList } from "@/components/budgets/budget-list"
-import { BudgetSummaryCard } from "@/components/budgets/budget-summary-card"
-import { Budget, BudgetSummary } from "@/types/budget"
-import { BudgetForm } from "@/components/budgets/budget-form"
-import { getBudgets, createBudget, updateBudget, deleteBudget } from '@/app/actions/budgets'
+import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { BudgetCard } from '@/components/budgets/budget-card';
+import { BudgetForm } from '@/components/budgets/budget-form';
+import { Budget } from '@/types/budget';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { budgetService, BudgetServiceError } from '@/lib/services/budget-service';
+import { useToast } from "@/components/ui/use-toast";
+import { AlertCircle, Plus } from 'lucide-react';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { CreateBudgetData } from '@/lib/services/budget-service';
+
+const amountFormSchema = z.object({
+  amount: z
+    .number()
+    .min(0.01, "Amount must be greater than 0")
+    .max(1000000, "Amount must be less than 1,000,000"),
+});
+
+type AmountFormValues = z.infer<typeof amountFormSchema>;
 
 export default function BudgetsPage() {
-  const [budgets, setBudgets] = useState<Budget[]>([])
-  const [showForm, setShowForm] = useState(false)
-  const [editingBudget, setEditingBudget] = useState<Budget | null>(null)
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null);
+  const [isAmountDialogOpen, setIsAmountDialogOpen] = useState(false);
+  const [amountAction, setAmountAction] = useState<'add' | 'withdraw'>('add');
+  const [selectedBudgetId, setSelectedBudgetId] = useState<string>('');
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  // Fetch budgets on mount and when transactions change
-  useEffect(() => {
-    const loadBudgets = async () => {
-      const { data, error } = await getBudgets()
-      if (data) {
-        setBudgets(data)
-      } else if (error) {
-        console.error('Error loading budgets:', error)
-      }
-    }
+  const amountForm = useForm<AmountFormValues>({
+    resolver: zodResolver(amountFormSchema),
+    defaultValues: {
+      amount: 0,
+    },
+  });
 
-    loadBudgets()
-  }, [])
+  // Query for fetching budgets
+  const { data: budgets, error: budgetsError } = useQuery<Budget[], BudgetServiceError>({
+    queryKey: ['budgets'],
+    queryFn: () => budgetService.getBudgets(),
+  });
 
-  // Calculate budget summary from current budgets state
-  const summary: BudgetSummary = {
-    totalBudget: budgets.reduce((total, budget) => total + budget.amount, 0),
-    totalSpent: budgets.reduce((total, budget) => total + budget.spent, 0),
-    remainingBudget: budgets.reduce((total, budget) => total + (budget.amount - budget.spent), 0)
+  // Mutation for creating a budget
+  const createBudgetMutation = useMutation({
+    mutationFn: (data: Omit<Budget, 'id' | 'spent' | 'createdAt' | 'updatedAt'>) => 
+      budgetService.createBudget(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+      setIsFormOpen(false);
+      toast({
+        title: "Success",
+        description: "Budget created successfully",
+      });
+    },
+    onError: (error: BudgetServiceError) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation for updating a budget
+  const updateBudgetMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<Omit<Budget, 'id' | 'spent' | 'createdAt' | 'updatedAt'>> }) =>
+      budgetService.updateBudget(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+      setIsFormOpen(false);
+      setSelectedBudget(null);
+      toast({
+        title: "Success",
+        description: "Budget updated successfully",
+      });
+    },
+    onError: (error: BudgetServiceError) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation for deleting a budget
+  const deleteBudgetMutation = useMutation({
+    mutationFn: (id: string) => budgetService.deleteBudget(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+      toast({
+        title: "Success",
+        description: "Budget deleted successfully",
+      });
+    },
+    onError: (error: BudgetServiceError) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation for adjusting budget amount
+  const adjustBudgetAmountMutation = useMutation({
+    mutationFn: ({ id, amount, action }: { id: string; amount: number; action: 'add' | 'withdraw' }) =>
+      budgetService.adjustBudgetAmount(id, amount, action),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+      setIsAmountDialogOpen(false);
+      amountForm.reset();
+      toast({
+        title: "Success",
+        description: `Amount ${amountAction}ed successfully`,
+      });
+    },
+    onError: (error: BudgetServiceError) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleAmountSubmit = async (values: AmountFormValues) => {
+    if (!selectedBudgetId) return;
+
+    await adjustBudgetAmountMutation.mutateAsync({
+      id: selectedBudgetId,
+      amount: values.amount,
+      action: amountAction,
+    });
+  };
+
+  if (budgetsError) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>{budgetsError.message}</AlertDescription>
+      </Alert>
+    );
   }
 
-  const handleAddBudget = async (newBudget: Partial<Budget>) => {
-    const { data, error } = await createBudget({
-      category: newBudget.category!,
-      amount: newBudget.amount!,
-      period: 'monthly',
-      color: newBudget.color!, // Map color to theme for database
-    })
-
-    if (data) {
-      const { data: updatedBudgets } = await getBudgets()
-      if (updatedBudgets) {
-        setBudgets(updatedBudgets)
-      }
-      setShowForm(false)
-    } else if (error) {
-      console.error('Error creating budget:', error)
-    }
-  }
-
-  const handleEditBudget = (budget: Budget) => {
-    setEditingBudget(budget)
-    setShowForm(true)
-  }
-
-  const handleUpdateBudget = async (updatedBudget: Partial<Budget>) => {
-    if (!editingBudget) return
-
-    const { data, error } = await updateBudget(editingBudget.id, {
-      category: updatedBudget.category,
-      amount: updatedBudget.amount,
-      color: updatedBudget.color, // Map color to theme for database
-    })
-
-    if (data) {
-      const { data: updatedBudgets } = await getBudgets()
-      if (updatedBudgets) {
-        setBudgets(updatedBudgets)
-      }
-      setEditingBudget(null)
-      setShowForm(false)
-    } else if (error) {
-      console.error('Error updating budget:', error)
-    }
-  }
-
-  const handleDeleteBudget = async (budget: Budget) => {
-    const { error } = await deleteBudget(budget.id)
-    
-    if (!error) {
-      const { data: updatedBudgets } = await getBudgets()
-      if (updatedBudgets) {
-        setBudgets(updatedBudgets)
-      }
-    } else {
-      console.error('Error deleting budget:', error)
-    }
-  }
   return (
     <div className="p-8 space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold tracking-tight">Budgets</h2>
-        <Button onClick={() => setShowForm(true)}>
+        <Button onClick={() => setIsFormOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
           Add Budget
         </Button>
       </div>
 
-      <div className="space-y-6">
-        <BudgetSummaryCard summary={summary} />
-        
-        <Card>
-          <CardContent className="pt-6">
-            <BudgetList 
-              budgets={budgets} 
-              onEdit={handleEditBudget}
-              onDelete={handleDeleteBudget}
-            />
-          </CardContent>
-        </Card>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {budgets?.map((budget) => (
+          <BudgetCard
+            key={budget.id}
+            budget={budget}
+            onEdit={() => {
+              setSelectedBudget(budget);
+              setIsFormOpen(true);
+            }}
+            onDelete={() => deleteBudgetMutation.mutate(budget.id)}
+            onAddAmount={(id) => {
+              setSelectedBudgetId(id);
+              setAmountAction('add');
+              setIsAmountDialogOpen(true);
+            }}
+            onWithdrawAmount={(id) => {
+              setSelectedBudgetId(id);
+              setAmountAction('withdraw');
+              setIsAmountDialogOpen(true);
+            }}
+          />
+        ))}
       </div>
 
-      <BudgetForm
-        open={showForm}
-        onOpenChange={setShowForm}
-        onSubmit={editingBudget ? handleUpdateBudget : handleAddBudget}
-        initialData={editingBudget ?? undefined}
-        mode={editingBudget ? 'edit' : 'add'}
-      />
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent>
+          <BudgetForm
+            onSubmit={async (formData) => {
+              try {
+                setIsSubmitting(true);
+
+                const data = {
+                  ...formData,
+                  startDate: formData.startDate.toISOString(),
+                  endDate: formData.endDate?.toISOString(),
+                };
+
+                if (selectedBudget) {
+                  await budgetService.updateBudget(selectedBudget.id, data);
+                } else {
+                  await budgetService.createBudget(data);
+                }
+
+                await queryClient.invalidateQueries({ queryKey: ['budgets'] });
+                toast({ title: selectedBudget ? 'Budget updated' : 'Budget created', variant: 'default' });
+                setIsFormOpen(false);
+              } catch (error) {
+                toast({ title: 'Failed to save budget', variant: 'destructive' });
+              } finally {
+                setIsSubmitting(false);
+              }
+            }}
+            onCancel={() => {
+              setIsFormOpen(false);
+              setSelectedBudget(null);
+            }}
+            budget={selectedBudget}
+            isSubmitting={isSubmitting}
+          />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isAmountDialogOpen} onOpenChange={setIsAmountDialogOpen}>
+        <DialogContent>
+          <Form {...amountForm}>
+            <form onSubmit={amountForm.handleSubmit(handleAmountSubmit)} className="space-y-4">
+              <FormField
+                control={amountForm.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Amount to {amountAction}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        placeholder="Enter amount"
+                        {...field}
+                        onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" disabled={adjustBudgetAmountMutation.isPending}>
+                {amountAction.charAt(0).toUpperCase() + amountAction.slice(1)} Amount
+              </Button>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

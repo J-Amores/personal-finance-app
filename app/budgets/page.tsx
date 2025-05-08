@@ -9,6 +9,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { budgetService, BudgetServiceError } from '@/lib/services/budget-service';
 import { useToast } from "@/components/ui/use-toast";
 import { AlertCircle, Plus } from 'lucide-react';
+import { BudgetProgressChart } from '@/components/budgets/charts/BudgetProgressChart';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
@@ -153,10 +154,16 @@ export default function BudgetsPage() {
 
   if (budgetsError) {
     return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertDescription>{budgetsError.message}</AlertDescription>
-      </Alert>
+      <div>
+        <div className="mb-6">
+          <BudgetProgressChart />
+        </div>
+
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{budgetsError.message}</AlertDescription>
+        </Alert>
+      </div>
     );
   }
 

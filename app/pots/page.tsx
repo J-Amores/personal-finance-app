@@ -8,7 +8,8 @@ import { Pot } from '@prisma/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { potService, PotServiceError } from '@/lib/services/pot-service';
 import { useToast } from "@/components/ui/use-toast";
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Plus } from 'lucide-react';
+import { PotsProgressChart } from '@/components/pots/charts/PotsProgressChart';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog } from "@/components/ui/dialog";
 import {
@@ -203,12 +204,18 @@ export default function PotsPage() {
 
   if (fetchError) {
     return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          {fetchError.message}
-        </AlertDescription>
-      </Alert>
+      <div>
+        <div className="mb-6">
+          <PotsProgressChart />
+        </div>
+
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            {fetchError.message}
+          </AlertDescription>
+        </Alert>
+      </div>
     );
   }
 

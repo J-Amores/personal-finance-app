@@ -7,6 +7,16 @@ import { Button } from "@/components/ui/button"
 import { Search, ChevronLeft, ChevronRight } from "lucide-react"
 import { useTransactions } from '@/hooks/use-transactions';
 
+const categoryAvatars: Record<string, string> = {
+  'Income': 'james-thompson',
+  'Bills': 'spark-electric-solutions',
+  'Shopping': 'sofia-peterson',
+  'Groceries': 'emma-richardson',
+  'Entertainment': 'savory-bites-bistro',
+  'Transportation': 'urban-services-hub',
+  'General': 'daniel-carter'
+};
+
 export default function TransactionsPage() {
   const { transactions } = useTransactions();
   const [search, setSearch] = useState('');
@@ -109,11 +119,11 @@ export default function TransactionsPage() {
                     <tr key={transaction.id} className="py-4">
                       <td className="py-4">
                         <div className="flex items-center">
-                          <div className="w-10 h-10 bg-amber-800 rounded-full flex items-center justify-center mr-3">
-                            <span className="text-white text-xs">
-                              {transaction.description.slice(0, 2).toUpperCase()}
-                            </span>
-                          </div>
+                          <img 
+                            src={`/assets/images/avatars/${categoryAvatars[transaction.category] || 'default-avatar'}.jpg`}
+                            alt={transaction.description}
+                            className="w-10 h-10 rounded-full object-cover mr-3"
+                          />
                           <div>{transaction.description}</div>
                         </div>
                       </td>
